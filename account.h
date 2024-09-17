@@ -2,41 +2,92 @@
 #define ACCOUNT_H 1
 
 #include <iostream>
+#include <conio.h>
+#include "function.h"
 using namespace std;
 
+// Class
 class Account
 {
-private:
+public:
+    enum Role
+    {
+        USER,
+        ADMIN
+    };
+
+protected:
     int id;
-    string username;
+    string name;
     string password;
-    float balance;
+    Role role;
 
 public:
     Account();
-    Account(int &id, string &username, string &password);
+    Account(int &id, string &name, string &password,Role role);
     ~Account();
 
-    int getId() const;
-    string getUsername() const;
-    void addBalance(float amount);
-    float getBalance() const;
-    //   void deductBalance(float amount) { balance -= amount; }
+    string getName();
+    string getPass();
+    int getId();
+    Role getRole();
+
+    friend istream &operator>>(istream &in, Account &account);
 };
 
-Account::Account(int &id, string &username, string &password)
-    : id(id), username(username), password(password), balance(0.0f) {}
+// Hàm
+Account::Account() : id(-1), role(USER) {}
 
-Account::Account() : id(-1), balance(0.0f) {}
+Account::Account(int &id, string &name, string &password, Role role)
+    : id(id), name(name), password(password), role(role) {}
 
-Account::~Account(){} ;
+Account::~Account() {};
 
-int Account::getId() const { return id; }
+string Account::getName() { return name; }
 
-string Account::getUsername() const { return username; }
+string Account::getPass() { return password; }
 
-float Account::getBalance() const { return balance; }
+int Account::getId() { return id; }
 
-void Account::addBalance(float amount) { balance += amount; }
+Account::Role Account::getRole() { return role; }
+
+void enterpassword(string &password)
+{
+    password = "";
+    int i = 0;
+    while (true)
+    {
+        char ch = getch();
+        if (ch == KEY_ENTER)
+            break;
+        if (ch != KEY_BACKSPACE)
+        {
+            password += ch;
+            i++;
+            cout << "•";
+        }
+        else
+        {
+            if (i > 0)
+            {
+                i--;
+                cout << "\b \b";
+            }
+            else
+            {
+                cout << " \b"; // cần check
+            }
+        }
+    }
+}
+
+istream &operator>>(istream &in, Account &account)
+{
+    cout << "Name: ";
+    in >> account.name;
+    cout << "Password: ";
+    enterpassword(account.password);
+    return in;
+}
 
 #endif

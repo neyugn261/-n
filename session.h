@@ -4,14 +4,14 @@
 #include <iostream>
 #include <ctime>
 #include "computer.h"
-#include "account.h"
+#include "user.h"
 using namespace std;
 
 class Session
 {
 private:
     int sessionId;
-    Account *account;
+    User *user;
     Computer *computer;
     time_t startTime;
     time_t endTime;
@@ -19,16 +19,16 @@ private:
 
 public:
     Session();
-    Session(int sessionId, Account &account, Computer &computer);
+    Session(int sessionId, User &user, Computer &computer);
 
     void endSession();
     int getSessionId();
 };
 
-Session::Session() : sessionId(-1), account(nullptr), computer(nullptr), isActive(false) {}
+Session::Session() : sessionId(-1), user(nullptr), computer(nullptr), isActive(false) {}
 
-Session::Session(int sessionId, Account &account, Computer &computer)
-    : sessionId(sessionId), account(&account), computer(&computer), isActive(true)
+Session::Session(int sessionId, User &user, Computer &computer)
+    : sessionId(sessionId), user(&user), computer(&computer), isActive(true)
 {
     computer.startUsage();
     startTime = time(nullptr);
