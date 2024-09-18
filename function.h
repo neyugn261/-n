@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <windows.h>
+#include <conio.h>
 
 #define KEY_ENTER 13
 #define KEY_BACKSPACE 8

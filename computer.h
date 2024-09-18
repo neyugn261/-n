@@ -1,8 +1,7 @@
 #ifndef _COMPUTER_H
 #define _COMPUTER_H 1
 
-#include <iostream>
-using namespace std;
+#include "Account.h"
 
 class Computer
 {

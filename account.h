@@ -1,36 +1,26 @@
 #ifndef ACCOUNT_H
 #define ACCOUNT_H 1
 
-#include <iostream>
-#include <conio.h>
 #include "function.h"
-using namespace std;
 
 // Class
 class Account
 {
-public:
-    enum Role
-    {
-        USER,
-        ADMIN
-    };
-
 protected:
     int id;
     string name;
     string password;
-    Role role;
+    string role;
 
 public:
     Account();
-    Account(int &id, string &name, string &password, Role role);
+    Account(int &id, string &name, string &password, string role);
     ~Account();
 
     string getName();
     string getPass();
     int getId();
-    Role getRole();
+    string getRole();
     bool login();          // chua lam
     void changePassword(); // chua lam
 
@@ -40,9 +30,9 @@ public:
 };
 
 // Hàm
-Account::Account() : id(-1), role(USER) {}
+Account::Account() : id(-1) {}
 
-Account::Account(int &id, string &name, string &password, Role role)
+Account::Account(int &id, string &name, string &password, string role)
     : id(id), name(name), password(password), role(role) {}
 
 Account::~Account() {};
@@ -53,7 +43,7 @@ string Account::getPass() { return password; }
 
 int Account::getId() { return id; }
 
-Account::Role Account::getRole() { return role; }
+string Account::getRole() { return role; }
 
 void enterpassword(string &password)
 {
@@ -81,6 +71,31 @@ void enterpassword(string &password)
     }
 }
 
+bool checkAccount(Account &account)
+{
+    string filename = "listAccount.txt";
+    fstream file(filename, ios::in);
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return false;
+    }
+    Account temp;
+    while (getAccountFromFile(file, temp))
+    {
+        if (temp.name == account.name && temp.password == account.password)
+        {
+            account.role = temp.role;
+            account.id = temp.id;
+            file.close();
+            return true;
+        }
+    }
+    file.close();
+    return false;
+}
+
+// Hàm này cần thêm cái dòng thông báo
 bool Account::login()
 {
     system("cls");
@@ -88,7 +103,13 @@ bool Account::login()
     while (count < 3)
     {
         cin >> *this;
+        if (checkAccount(*this))
+        {
+            return true;
+        }
+        else count++;
     }
+    return false;
 }
 
 istream &operator>>(istream &in, Account &account)
@@ -97,7 +118,7 @@ istream &operator>>(istream &in, Account &account)
     in >> account.name;
     cout << "Password: ";
     enterpassword(account.password);
-    account.role = Account::USER;
+    account.role = "USER";
     return in;
 }
 

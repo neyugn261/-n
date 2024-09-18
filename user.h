@@ -23,7 +23,7 @@ public:
 User::User() : Account() {}
 
 User::User( int &id, string &userName, string &password)
-    : Account(id, userName, password,USER) {}
+    : Account(id, userName, password,"USER") {}
 
 User::~User() {};
 
