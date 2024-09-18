@@ -24,15 +24,19 @@ protected:
 
 public:
     Account();
-    Account(int &id, string &name, string &password,Role role);
+    Account(int &id, string &name, string &password, Role role);
     ~Account();
 
     string getName();
     string getPass();
     int getId();
     Role getRole();
+    bool login();          // chua lam
+    void changePassword(); // chua lam
 
     friend istream &operator>>(istream &in, Account &account);
+    friend bool checkAccount(Account &account);                      // chua lam
+    friend bool getAccountFromFile(fstream &file, Account &account); // chualam
 };
 
 // Hàm
@@ -73,11 +77,17 @@ void enterpassword(string &password)
                 i--;
                 cout << "\b \b";
             }
-            else
-            {
-                cout << " \b"; // cần check
-            }
         }
+    }
+}
+
+bool Account::login()
+{
+    system("cls");
+    int count = 0;
+    while (count < 3)
+    {
+        cin >> *this;
     }
 }
 
@@ -87,6 +97,7 @@ istream &operator>>(istream &in, Account &account)
     in >> account.name;
     cout << "Password: ";
     enterpassword(account.password);
+    account.role = Account::USER;
     return in;
 }
 
