@@ -104,7 +104,8 @@ bool Account::login()
     {
         cin >> *this;
         if (checkAccount(*this))
-        {
+        {   
+            system("cls");
             return true;
         }
         else count++;

@@ -13,7 +13,7 @@ int main()
     {
         if (account.getRole() == "ADMIN")
         {
-            cout << "\nhi";
+            menuAdmin();
         }
     }
 
