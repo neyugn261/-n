@@ -1,7 +1,7 @@
 #ifndef USER_H
 #define USER_H 1
 
-#include "Account.h"
+#include "account.h"
 
 //Class
 class User : public Account
@@ -19,16 +19,5 @@ public:
 };
 
 
-// Hàm
-User::User() : Account() {}
-
-User::User( int &id, string &userName, string &password)
-    : Account(id, userName, password,"USER") {}
-
-User::~User() {};
-
-float User::getBalance() { return balance; }
-
-void User::addBalance(float amount) { balance += amount; }
 
 #endif
