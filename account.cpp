@@ -38,8 +38,13 @@ bool Account::login()
             return true;
         }
         else
+        {
+            cout << "\nĐăng nhập thất bại" << endl;
             count++;
+        }
     }
+    cout << "Đăng nhập sai quá 3 lần !" << endl;
+    ;
     return false;
 }
 
@@ -88,7 +93,7 @@ bool getAccountFromFile(fstream &file, Account &account)
 
 istream &operator>>(istream &in, Account &account)
 {
-    cout << "Name: ";
+    cout << "Username: ";
     in >> account.name;
     cout << "Password: ";
     enterpassword(account.password);
@@ -104,19 +109,20 @@ void enterpassword(string &password)
         char ch = getch();
         if (ch == KEY_ENTER)
             break;
-        if (ch != KEY_BACKSPACE)
-        {
-            password += ch;
-            i++;
-            cout << "•";
-        }
-        else
+        else if (ch == KEY_BACKSPACE)
         {
             if (i > 0)
             {
                 i--;
                 cout << "\b \b";
+                password.pop_back();
             }
+        }
+        else
+        {
+            password += ch;
+            i++;
+            cout << "•";
         }
     }
 }
