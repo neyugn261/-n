@@ -8,7 +8,6 @@
 #define KEY_ENTER 13
 #define KEY_BACKSPACE 8
 
-
 Account::Account() : id("") {}
 
 Account::Account(string id, string name, string password, string role)
@@ -46,6 +45,7 @@ bool Account::login()
             count++;
         }
     }
+    system("cls");
     cout << "Đăng nhập sai quá 3 lần !" << endl;
     ;
     return false;

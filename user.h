@@ -15,6 +15,10 @@ public:
     ~User();
 
     string getBalance();
+    friend bool checkUser(User &user);
+    friend bool getUserFromFile(fstream &file, User &user);
+    friend ostream &operator<<(ostream &out, User &user);
 };
-
+bool checkUser(User &user);
+ostream &operator<<(ostream &out, User &user);
 #endif

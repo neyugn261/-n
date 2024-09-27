@@ -1,10 +1,6 @@
 #include "function.h"
 #include "admin.h"
 #include "user.h"
-#include <fstream>
-#include <sstream>
-#include <conio.h>
-// #include <iomanip>
 /*------------------------------------CONSOLE------------------------------------*/
 
 void ShowCursor(bool CursorVisibility)
@@ -92,6 +88,24 @@ void optionMenu(string typeMenu, int option)
             break;
         }
     }
+    else if (typeMenu == "TTTT")
+    {
+        switch (option)
+        {
+        case 1:
+            cout << "Xem thông tin tài khoản" << endl;
+            break;
+        case 2:
+            cout << "Thay đổi mật khẩu" << endl;
+            break;
+        case 3:
+            cout << "Reset số dư tài khoản" << endl;
+            break;
+        case 4:
+            cout << "Thoát" << endl;
+            break;
+        }
+    }
 }
 
 void printMenuOption(string typeMenu, int option, bool isSelected)
@@ -111,8 +125,10 @@ int getMenuOptionCount(const string &typeMenu)
         return 5;
     if (typeMenu == "QLMC")
         return 7;
-    if (typeMenu == "MENU_4")
-        return 7;
+    if (typeMenu == "TTTT")
+        return 4;
+    if (typeMenu == "một menu khác")
+        return 4; // số chức năng của menu
 
     // Mặc định nếu không tìm thấy menu
     return 0;
@@ -134,6 +150,103 @@ void showMenu(string typeMenu, int selectOption)
     {
         cout << "Menu not found!" << endl;
     }
+}
+
+void seenUser(User &user)
+{
+    system("cls");
+    cout << "(Nhấn ENTER để thoát)" << endl;
+    cout << user;
+    while (true)
+    {
+        int key = _getch();
+        if (key == KEY_ENTER)
+        {
+            system("cls");
+            return;
+        }
+    }
+}
+
+
+void menuTTTT(User &user)
+{
+    SetConsoleTitle(TEXT("Menu TTTT"));
+    int selectOption = 1;
+    while (true)
+    {
+        showMenu("TTTT", selectOption);
+        int key = _getch();
+        switch (key)
+        {
+        case KEY_UP:
+            selectOption = (selectOption == 1) ? 4 : selectOption - 1;
+            break;
+        case KEY_DOWN:
+            selectOption = (selectOption == 4) ? 1 : selectOption + 1;
+            break;
+        case KEY_ENTER:
+            system("cls");
+            switch (selectOption)
+            {
+            case 1:
+                seenUser(user);
+                break;
+            case 2:
+
+                break;
+            case 3:
+                break;
+            case 4:
+                return;
+            }
+            break;
+        }
+    }
+}
+
+// thao tác với thông tin tài khoản
+void TTTT()
+{
+    ShowCursor(true);
+    string name;
+    User user;
+    string pathFileUser = "./account/userAccount.txt";
+    fstream fileUser(pathFileUser, ios::in);
+
+    int i = 1;
+    int count = 0;
+    cout << "(Nhập sai quá 3 lần tự động thoát)" << endl;
+    while (count < 3)
+    {
+        cout << "Nhập tên tài khoản: ";
+        cin >> name;
+
+        while (getUserFromFile(fileUser, user))
+        {
+            if (user.getName() == name)
+            {
+                i = 0;
+                break;
+            }
+        }
+
+        if (i)
+        {
+            cout << "Không tìm thấy tài khoản!" << endl;
+            count++;
+        }
+        else
+            break;
+    }
+    system("cls");
+    ShowCursor(false);
+    if (i)
+        return;
+
+    menuTTTT(user);
+
+    fileUser.close();
 }
 
 void menuQLTK(Admin &admin)
@@ -164,6 +277,7 @@ void menuQLTK(Admin &admin)
                 ShowCursor(false);
                 break;
             case 3:
+                TTTT();
                 break;
             case 5:
                 return;
@@ -171,7 +285,6 @@ void menuQLTK(Admin &admin)
             break;
         }
     }
-    
 }
 
 void menuQLMC(Admin &admin)
@@ -209,7 +322,6 @@ void menuQLMC(Admin &admin)
             break;
         }
     }
-    
 }
 
 void menuAdmin(Admin &admin)
@@ -217,10 +329,12 @@ void menuAdmin(Admin &admin)
     SetConsoleTitle(TEXT("Menu Admin"));
     ShowCursor(false);
     int selectOption = 1;
+
     while (true)
     {
         showMenu("ADMIN", selectOption);
         int key = _getch();
+
         switch (key)
         {
         case KEY_UP:
@@ -240,6 +354,7 @@ void menuAdmin(Admin &admin)
                 menuQLMC(admin);
                 break;
             case 3:
+
                 break;
             case 4:
                 cout << "Thoát" << endl;
@@ -248,63 +363,60 @@ void menuAdmin(Admin &admin)
             break;
         }
     }
+
     ShowCursor(true);
 }
 
 /*------------------------------------Other------------------------------------*/
 
-int getNumberOfAccounts()
-{
-    int count;
-    fstream file("UserID.txt", ios::in);
-    if (!file.is_open())
-    {
-        cout << "Không thể mở file" << endl;
-        return -1;
-    }
-    file >> count;
-    file.close();
-    return count;
-}
+// int getNumberOfAccounts()
+// {
+//     int count;
+//     fstream file("UserID.txt", ios::in);
+//     if (!file.is_open())
+//     {
+//         cout << "Không thể mở file" << endl;
+//         return -1;
+//     }
+//     file >> count;
+//     file.close();
+//     return count;
+// }
 
-void updateNumberOfAccounts(int &count)
-{
-    fstream file("UserID.txt", ios::out);
-    if (!file.is_open())
-    {
-        cout << "Không thể mở file" << endl;
-        return;
-    }
-    file << count;
-    file.close();
-}
+// void updateNumberOfAccounts(int &count)
+// {
+//     fstream file("UserID.txt", ios::out);
+//     if (!file.is_open())
+//     {
+//         cout << "Không thể mở file" << endl;
+//         return;
+//     }
+//     file << count;
+//     file.close();
+// }
 
-int getNumberOfComputers()
-{
-    int count;
-    fstream file("ComputerID.txt", ios::in);
-    if (!file.is_open())
-    {
-        cout << "Không thể mở file" << endl;
-        return -1;
-    }
-    file >> count;
-    file.close();
-    return count;
-}
+// int getNumberOfComputers()
+// {
+//     int count;
+//     fstream file("ComputerID.txt", ios::in);
+//     if (!file.is_open())
+//     {
+//         cout << "Không thể mở file" << endl;
+//         return -1;
+//     }
+//     file >> count;
+//     file.close();
+//     return count;
+// }
 
-void updateNumberOfComputers(int &count)
-{
-    fstream file("ComputerID.txt", ios::out);
-    if (!file.is_open())
-    {
-        cout << "Không thể mở file" << endl;
-        return;
-    }
-    file << count;
-    file.close();
-}
-
-
-
-
+// void updateNumberOfComputers(int &count)
+// {
+//     fstream file("ComputerID.txt", ios::out);
+//     if (!file.is_open())
+//     {
+//         cout << "Không thể mở file" << endl;
+//         return;
+//     }
+//     file << count;
+//     file.close();
+// }

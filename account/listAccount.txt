@@ -1,3 +1,6 @@
 nguyen|n147|ADMIN
 abc|xyz|USER
 nguyen|xy|USER
+abcxyz|ƒ|USER
+hung|2313|USER
+toaaa|1231|USER
