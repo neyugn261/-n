@@ -4,6 +4,12 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include <conio.h>
+
+
+#define KEY_ENTER 13
+
+
 
 // #include "function.h"
 
@@ -72,21 +78,22 @@ void Admin::addAccount()
     User newAccount;
 
     system("cls");
-
+    
     while (true)
     {
         cin >> newAccount;
         if (!checkUser(newAccount))
         {
-            system("cls");
+            cout << "\nTạo tài khoản thành công!" << endl;
             break;
         }
         else
         {
-            cout << "\nTài khoản đã được sử dụng !" << endl;
-            
+            cout << "\nTài khoản đã được sử dụng, vui lòng nhập tài khoản khác!" << endl;
         }
     }
+
+    
 
     newAccount.assignRoleIsUser();
 
@@ -119,7 +126,16 @@ void Admin::addAccount()
     {
         cout << "Không thể mở file " << filename << endl;
     }
-    system("cls");
+    cout << "\n(Nhấn ENTER để thoát)" << endl;
+    while (true)
+    {
+        int key = _getch();
+        if (key == KEY_ENTER)
+        {
+            system("cls");
+            return;
+        }
+    }
 }
 
 void Admin::addComputer()
@@ -142,11 +158,20 @@ void Admin::addComputer()
     {
         file << newComputer.getId() << "|" << newComputer.getCost() << "|" << newComputer.getStatus() << "|" << newComputer.getRevenue() << endl;
         file.close();
+        cout << "Thêm máy thành công!" << endl;
+        cout << "\n(Nhấn ENTER để thoát)" << endl;
+        while (true)
+        {
+            int key = _getch();
+            if (key == KEY_ENTER)
+            {
+                system("cls");
+                return;
+            }
+        }
     }
     else
     {
         cout << "Không thể mở file " << filename << endl;
     }
-
-    system("cls");
 }

@@ -51,6 +51,7 @@ bool Account::login()
     return false;
 }
 
+
 bool checkAccount(Account &account)
 {
     string filename = "./account/listAccount.txt";
@@ -81,7 +82,7 @@ bool getAccountFromFile(fstream &file, Account &account)
     getline(file, line);
     if (line == "")
         return false;
-    stringstream ss(line);  
+    stringstream ss(line);
     getline(ss, account.name, '|');
     getline(ss, account.password, '|');
     getline(ss, account.role);

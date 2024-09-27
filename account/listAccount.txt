@@ -1,6 +1,9 @@
 nguyen|n147|ADMIN
-abc|xyz|USER
-nguyen|xy|USER
-abcxyz|ƒ|USER
+abc|1234|USER
+aaaaaaa|xy|USER
 hung|2313|USER
 toaaa|1231|USER
+hoangnguyen|quocnguyen|USER
+hnhi|0708|USER
+kvi|0201|USER
+thoa|2501|USER

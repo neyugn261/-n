@@ -155,8 +155,8 @@ void showMenu(string typeMenu, int selectOption)
 void seenUser(User &user)
 {
     system("cls");
-    cout << "(Nhấn ENTER để thoát)" << endl;
     cout << user;
+    cout << "\n(Nhấn ENTER để thoát)" << endl;
     while (true)
     {
         int key = _getch();
@@ -168,6 +168,56 @@ void seenUser(User &user)
     }
 }
 
+void resetBalance(User &user)
+{
+    system("cls");
+    user.resetBalance();
+    cout << "Đặt lại số dư tài khoản thành công!" << endl;
+    cout << "\n(Nhấn ENTER để quay lại)" << endl;
+    while (true)
+    {
+        int key = _getch();
+        if (key == KEY_ENTER)
+        {
+            system("cls");
+            return;
+        }
+    }
+}
+
+void changePassword(User &user)
+{
+    ShowCursor(true);
+    system("cls");
+    while (true)
+    {
+        string password1;
+        cout << "Nhập mật khẩu mới: ";
+        enterpassword(password1);
+        string password2;
+        cout << "\nNhập lại mật khẩu: ";
+        enterpassword(password2);
+        if (password1 == password2)
+        {
+            user.changePassword(password1);
+            break;
+        }
+        else
+            cout << "\nMật khẩu không khớp, vui lòng nhập lại!" << endl;
+    }
+    ShowCursor(false);
+    cout << "\nThay đổi mật khẩu thành công!" << endl;
+    cout << "\n(Nhấn ENTER để thoát)" << endl;
+    while (true)
+    {
+        int key = _getch();
+        if (key == KEY_ENTER)
+        {
+            system("cls");
+            return;
+        }
+    }
+}
 
 void menuTTTT(User &user)
 {
@@ -193,9 +243,10 @@ void menuTTTT(User &user)
                 seenUser(user);
                 break;
             case 2:
-
+                changePassword(user);
                 break;
             case 3:
+                resetBalance(user);
                 break;
             case 4:
                 return;
@@ -243,10 +294,8 @@ void TTTT()
     ShowCursor(false);
     if (i)
         return;
-
-    menuTTTT(user);
-
     fileUser.close();
+    menuTTTT(user);
 }
 
 void menuQLTK(Admin &admin)
@@ -272,9 +321,7 @@ void menuQLTK(Admin &admin)
             case 1:
                 break;
             case 2:
-                ShowCursor(true);
                 admin.addAccount();
-                ShowCursor(false);
                 break;
             case 3:
                 TTTT();

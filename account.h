@@ -25,11 +25,13 @@ public:
 
     bool login();
     void assignRoleIsUser();
-    void changePassword(); // chua lam
+    
 
     friend istream &operator>>(istream &in, Account &account);
     friend bool checkAccount(Account &account);
     friend bool getAccountFromFile(fstream &file, Account &account);
 };
+
+void enterpassword(string &password);
 
 #endif

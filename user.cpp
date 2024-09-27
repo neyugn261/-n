@@ -33,6 +33,12 @@ bool checkUser(User &user)
     return false;
 }
 
+void User::changePassword(string newPassword)
+{
+    password = newPassword;
+    updateAccountToFile(*this);
+}
+
 bool getUserFromFile(fstream &file, User &user)
 {
     string line;
@@ -49,10 +55,84 @@ bool getUserFromFile(fstream &file, User &user)
     return true;
 }
 
-ostream &operator<<(ostream &out, User &user){
-    cout<<"ID: "<<user.getId()<<endl;
-    cout<<"Tài khoản: "<<user.getName()<<endl;
-    cout<<"Mật khẩu: "<<user.getPass()<<endl;
-    cout<<"Số dư: "<<user.getBalance()<<endl;
+ostream &operator<<(ostream &out, User &user)
+{
+    cout << "ID: " << user.getId() << endl;
+    cout << "Tài khoản: " << user.getName() << endl;
+    cout << "Mật khẩu: " << user.getPass() << endl;
+    cout << "Số dư: " << user.getBalance() << endl;
     return out;
+}
+
+void User::resetBalance()
+{
+    balance = "0.000";
+}
+
+
+
+void updateAccountToFile(User &account)
+{
+    // sửa file: userAcount
+    string path1 = "./account/userAccount.txt";
+    fstream file1(path1, ios::in);
+    if (!file1.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+    string tempPath1 = "./account/temp1.txt";
+    fstream tempFile1(tempPath1, ios::out);
+    if (!tempFile1.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+
+    // sửa file: listAccount
+    string path2 = "./account/listAccount.txt";
+    fstream file2(path2, ios::in);
+    if (!file2.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+    string tempPath2 = "./account/temp2.txt";
+    fstream tempFile2(tempPath2, ios::out);
+    if (!tempFile2.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+
+    User temp1;
+    while (getUserFromFile(file1, temp1))
+    {
+        if (temp1.name == account.name)
+        {
+            temp1 = account;
+        }
+        tempFile1 << temp1.id << "|" << temp1.name << "|" << temp1.password << "|" << temp1.role << "|" << temp1.balance << endl;
+    }
+
+    User temp2;
+    while (getAccountFromFile(file2, temp2))
+    {
+        if (temp2.name == account.name)
+        {
+            temp2 = account;
+        }
+        tempFile2 << temp2.name << "|" << temp2.password << "|" << temp2.role << endl; 
+    }
+
+    file1.close();
+    tempFile1.close();
+    file2.close(); 
+    tempFile2.close(); 
+
+    system("del .\\account\\userAccount.txt");
+    system("rename .\\account\\temp1.txt userAccount.txt");
+
+    system("del .\\account\\listAccount.txt");
+    system("rename .\\account\\temp2.txt listAccount.txt"); 
 }

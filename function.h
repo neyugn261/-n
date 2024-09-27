@@ -37,7 +37,7 @@ void showMenu(string typeMenu, int selectOption);
 
 void menuQLTK(Admin &admin);  
 void TTTT(); 
-void menuTTTT(User &user);
+void menuTTTT(User &user); void seenUser(User &user);
 
 void menuQLMC(Admin &admin);
 
