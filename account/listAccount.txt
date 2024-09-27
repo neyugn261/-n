@@ -1,0 +1,3 @@
+nguyen|n147|ADMIN
+abc|xyz|USER
+nguyen|xy|USER

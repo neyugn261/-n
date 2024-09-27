@@ -11,11 +11,12 @@ private:
 
 public:
     Admin();
-    Admin(int &id, string &adminName, string &password);
+    Admin(string id, string adminName, string password);
     ~Admin();
 
     void addAccount();
+    void addComputer();
 };
-bool getAccountFromFile(fstream &file, Account &account);
-int getMaxId(string &filename);
+
+
 #endif

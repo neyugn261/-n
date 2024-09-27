@@ -1,4 +1,0 @@
-0|nguyen|n147|ADMIN
-1|member1|1|USER
-1|khoadang|1|USER
-1|test|123|USER

@@ -1,0 +1,2 @@
+USER0001|abc|xyz|USER|0.000
+USER0002|nguyen|xy|USER|0.000

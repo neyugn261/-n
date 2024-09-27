@@ -1,5 +1,6 @@
 #include "function.h"
-
+#include "admin.h"
+#include "user.h"
 /*------------------------------------CONSOLE------------------------------------*/
 
 void ShowCursor(bool CursorVisibility)
@@ -26,7 +27,7 @@ void optionMenu(string typeMenu, int option)
         switch (option)
         {
         case 1:
-            cout << "Quản lí người dùng" << endl;
+            cout << "Quản lí tài khoản" << endl;
             break;
         case 2:
             cout << "Quản lí máy con" << endl;
@@ -39,18 +40,18 @@ void optionMenu(string typeMenu, int option)
             break;
         }
     }
-    else if (typeMenu == "QLND")
+    else if (typeMenu == "QLTK")
     {
         switch (option)
         {
         case 1:
-            cout << "Xem danh sách người dùng" << endl;
+            cout << "Xem danh sách tài khoản" << endl;
             break;
         case 2:
-            cout << "Thêm người dùng" << endl;
+            cout << "Thêm tài khoản" << endl;
             break;
         case 3:
-            cout << "Thao tác với thông tin người dùng" << endl;
+            cout << "Thao tác với thông tin tài khoản" << endl;
             break;
         case 4:
             cout << "Nạp tiền" << endl;
@@ -102,7 +103,7 @@ int getMenuOptionCount(const string &typeMenu)
 {
     if (typeMenu == "ADMIN")
         return 4;
-    if (typeMenu == "QLND")
+    if (typeMenu == "QLTK")
         return 5;
     if (typeMenu == "QLMC")
         return 7;
@@ -131,13 +132,13 @@ void showMenu(string typeMenu, int selectOption)
     }
 }
 
-void menuQLND(Admin &admin)
+void menuQLTK(Admin &admin)
 {
-    SetConsoleTitle(TEXT("Menu QLND"));
+    SetConsoleTitle(TEXT("Menu QLTK"));
     int selectOption = 1;
     while (true)
     {
-        showMenu("QLND", selectOption);
+        showMenu("QLTK", selectOption);
         int key = _getch();
         switch (key)
         {
@@ -154,7 +155,9 @@ void menuQLND(Admin &admin)
             case 1:
                 break;
             case 2:
-            admin.addAccount();
+                ShowCursor(true);
+                admin.addAccount();
+                ShowCursor(false);
                 break;
             case 3:
                 break;
@@ -164,10 +167,10 @@ void menuQLND(Admin &admin)
             break;
         }
     }
-    ShowCursor(true);
+    
 }
 
-void menuQLMC()
+void menuQLMC(Admin &admin)
 {
     SetConsoleTitle(TEXT("Menu QLMC"));
     int selectOption = 1;
@@ -190,6 +193,9 @@ void menuQLMC()
             case 1:
                 break;
             case 2:
+                ShowCursor(true);
+                admin.addComputer();
+                ShowCursor(false);
                 break;
             case 3:
                 break;
@@ -199,7 +205,7 @@ void menuQLMC()
             break;
         }
     }
-    ShowCursor(true);
+    
 }
 
 void menuAdmin(Admin &admin)
@@ -224,10 +230,10 @@ void menuAdmin(Admin &admin)
             switch (selectOption)
             {
             case 1:
-                menuQLND(admin);
+                menuQLTK(admin);
                 break;
             case 2:
-                menuQLMC();
+                menuQLMC(admin);
                 break;
             case 3:
                 break;
@@ -243,6 +249,57 @@ void menuAdmin(Admin &admin)
 
 /*------------------------------------Other------------------------------------*/
 
+// int getNumberOfAccounts()
+// {
+//     int count;
+//     fstream file("UserID.txt", ios::in);
+//     if (!file.is_open())
+//     {
+//         cout << "Không thể mở file" << endl;
+//         return -1;
+//     }
+//     file >> count;
+//     file.close();
+//     return count;
+// }
+
+// void updateNumberOfAccounts(int &count)
+// {
+//     fstream file("UserID.txt", ios::out);
+//     if (!file.is_open())
+//     {
+//         cout << "Không thể mở file" << endl;
+//         return;
+//     }
+//     file << count;
+//     file.close();
+// }
+
+// int getNumberOfComputers()
+// {
+//     int count;
+//     fstream file("ComputerID.txt", ios::in);
+//     if (!file.is_open())
+//     {
+//         cout << "Không thể mở file" << endl;
+//         return -1;
+//     }
+//     file >> count;
+//     file.close();
+//     return count;
+// }
+
+// void updateNumberOfComputers(int &count)
+// {
+//     fstream file("ComputerID.txt", ios::out);
+//     if (!file.is_open())
+//     {
+//         cout << "Không thể mở file" << endl;
+//         return;
+//     }
+//     file << count;
+//     file.close();
+// }
 
 
 

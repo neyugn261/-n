@@ -1,27 +1,102 @@
 #include "admin.h"
+#include "computer.h"
+#include "user.h"
 #include <fstream>
 #include <sstream>
+#include <iomanip>
 
+// #include "function.h"
 
 Admin::Admin() : Account() {}
 
-Admin::Admin(int &id, string &adminName, string &password)
+Admin::Admin(string id, string adminName, string password)
     : Account(id, adminName, password, "ADMIN") {}
 
 Admin::~Admin() {};
 
+int getNumberOfAccounts()
+{
+    int count;
+    fstream file("./account/UserID.txt", ios::in);
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return -1;
+    }
+    file >> count;
+    file.close();
+    return count;
+}
+
+void updateNumberOfAccounts(int &count)
+{
+    fstream file("./account/UserID.txt", ios::out);
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+    file << count;
+    file.close();
+}
+
+int getNumberOfComputers()
+{
+    int count;
+    fstream file("./computer/ComputerID.txt", ios::in);
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return -1;
+    }
+    file >> count;
+    file.close();
+    return count;
+}
+
+void updateNumberOfComputers(int &count)
+{
+    fstream file("./computer/ComputerID.txt", ios::out);
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+    file << count;
+    file.close();
+}
+
 void Admin::addAccount()
 {
-    string filename = "listAccount.txt";
-    Account newAccount;
+    string filename = "./account/listAccount.txt";
+    User newAccount;
     cin >> newAccount;
     newAccount.assignRoleIsUser();
-    int newId = getMaxId(filename);
-    fstream file("listAccount.txt", ios::out | ios::app);
-    if (file.is_open())
+
+    int count = getNumberOfAccounts();
+    count++;
+    stringstream ss;
+    ss << setw(4) << setfill('0') << count;
+    string id = "USER" + ss.str();
+    newAccount.setId(id);
+    updateNumberOfAccounts(count);
+
+    fstream userFile("./account/userAccount.txt", ios::out | ios::app);
+    if (userFile.is_open())
     {
-        file << newId + 1<< "|" << newAccount.getName() << "|" << newAccount.getPass() << "|" << newAccount.getRole() << endl;
-        file.close();
+        userFile << newAccount.getId() << "|" << newAccount.getName() << "|" << newAccount.getPass() << "|" << newAccount.getRole() << "|" << newAccount.getBalance() << endl;
+        userFile.close();
+    }
+    else
+    {
+        cout << "Không thể mở file " << filename << endl;
+    }
+
+    fstream listFile("./account/listAccount.txt", ios::out | ios::app);
+    if (listFile.is_open())
+    {
+        listFile << newAccount.getName() << "|" << newAccount.getPass() << "|" << newAccount.getRole()  << endl;
+        listFile.close();
     }
     else
     {
@@ -30,45 +105,31 @@ void Admin::addAccount()
     system("cls");
 }
 
-
-int getMaxId(string &filename)
+void Admin::addComputer()
 {
-    fstream file(filename, ios::in);
-    int maxId = 0;
-    string line;
+    string filename = "./computer/listComputer.txt";
+    Computer newComputer;
+    newComputer.enterCost();
 
+    int count = getNumberOfComputers();
+    count++;
+    stringstream ss;
+    ss << setw(2) << setfill('0') << count;
+    string id = "MAY" + ss.str();
+    newComputer.setId(id);
+
+    updateNumberOfComputers(count);
+
+    fstream file("./computer/listComputer.txt", ios::out | ios::app);
     if (file.is_open())
     {
-        file.seekg(0, ios::end); // Di chuyển con trỏ tới cuối file
-        if (file.tellg() != 0)   // kiểm tra file có dữ liệu
-        {
-            // Đọc dòng cuối cùng
-            file.seekg(-1, ios::cur);
-            bool keepLooping = true;
-            while (keepLooping)
-            {
-                char ch;
-                file.get(ch);
-                if ((int)file.tellg() <= 1)
-                {
-                    file.seekg(0);
-                    keepLooping = false;
-                }
-                else if (ch == '\n')
-                {
-                    keepLooping = false;
-                }
-                else
-                {
-                    file.seekg(-2, ios::cur); //-2 vì khi get thì con trỏ di chuyển
-                }
-            }
-        }
-
-        getline(file, line);
-        stringstream ss(line);
-        ss >> maxId;
+        file << newComputer.getId() << "|" << newComputer.getCost() << "|" << newComputer.getStatus() << "|" << newComputer.getRevenue() << endl;
+        file.close();
     }
-    file.close();
-    return maxId;
+    else
+    {
+        cout << "Không thể mở file " << filename << endl;
+    }
+
+    system("cls");
 }

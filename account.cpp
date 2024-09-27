@@ -8,20 +8,22 @@
 #define KEY_ENTER 13
 #define KEY_BACKSPACE 8
 
-Account::Account() : id(-1) {}
+Account::Account() : id("") {}
 
-Account::Account(int &id, string &name, string &password, string role)
+Account::Account(string id, string name, string password, string role)
     : id(id), name(name), password(password), role(role) {}
 
-Account::~Account() {};
+Account::~Account() {}
 
 string Account::getName() { return name; }
 
 string Account::getPass() { return password; }
 
-int Account::getId() { return id; }
+string Account::getId() { return id; }
 
 string Account::getRole() { return role; }
+
+void Account::setId(string Id) { id = Id; }
 
 void Account::assignRoleIsUser() { role = "USER"; }
 
@@ -50,7 +52,7 @@ bool Account::login()
 
 bool checkAccount(Account &account)
 {
-    string filename = "listAccount.txt";
+    string filename = "./account/listAccount.txt";
     fstream file(filename, ios::in);
     if (!file.is_open())
     {
@@ -78,28 +80,13 @@ bool getAccountFromFile(fstream &file, Account &account)
     getline(file, line);
     if (line == "")
         return false;
-    stringstream ss(line);
-    string idStr;
-    getline(ss, idStr, '|');
+    stringstream ss(line);  
     getline(ss, account.name, '|');
     getline(ss, account.password, '|');
     getline(ss, account.role);
 
-    // Chuyển đổi ID từ chuỗi sang số nguyên
-    account.id = stoi(idStr);
-
     return true;
 }
-
-istream &operator>>(istream &in, Account &account)
-{
-    cout << "Username: ";
-    in >> account.name;
-    cout << "Password: ";
-    enterpassword(account.password);
-    return in;
-}
-
 void enterpassword(string &password)
 {
     password = "";
@@ -125,4 +112,13 @@ void enterpassword(string &password)
             cout << "•";
         }
     }
+}
+
+istream &operator>>(istream &in, Account &account)
+{
+    cout << "Username: ";
+    in >> account.name;
+    cout << "Password: ";
+    enterpassword(account.password);
+    return in;
 }

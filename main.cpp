@@ -1,4 +1,6 @@
 #include "function.h"
+#include "admin.h"
+
 
 using namespace std;
 
@@ -11,7 +13,7 @@ int main()
     {
         if (account.getRole() == "ADMIN")
         {
-            int id = account.getId();
+            string id = account.getId();
             string name = account.getName();
             string pass = account.getPass();
 

@@ -3,21 +3,18 @@
 
 #include "account.h"
 
-//Class
+// Class
 class User : public Account
 {
 private:
-    float balance;
+    string balance;
 
 public:
     User();
-    User(int &id, string &userName, string &password);
+    User(string id, string userName, string password);
     ~User();
 
-    void addBalance(float amount);
-    float getBalance();
+    string getBalance();
 };
-
-
 
 #endif
