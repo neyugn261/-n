@@ -8,6 +8,7 @@
 #define KEY_ENTER 13
 #define KEY_BACKSPACE 8
 
+
 Account::Account() : id("") {}
 
 Account::Account(string id, string name, string password, string role)

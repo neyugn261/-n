@@ -1,5 +1,5 @@
 #ifndef ADMIN_H
-#define ADMIN_H 1
+#define ADMIN_H 
 
 #include "account.h"
 

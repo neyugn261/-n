@@ -1,5 +1,5 @@
 #ifndef ACCOUNT_H
-#define ACCOUNT_H 1
+#define ACCOUNT_H 
 
 #include <iostream>
 using namespace std;

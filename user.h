@@ -1,5 +1,5 @@
 #ifndef USER_H
-#define USER_H 1
+#define USER_H 
 
 #include "account.h"
 

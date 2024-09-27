@@ -1,14 +1,8 @@
 #ifndef FUNCTION_H
-#define FUNCTION_H 1
+#define FUNCTION_H
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
 #include <windows.h>
-#include <conio.h>
-#include <iomanip>
-
-
+#include <iostream>
 
 using namespace std;
 
@@ -40,11 +34,9 @@ void menuQLMC(Admin &admin);
 void menuAdmin(Admin &admin);
 
 /*------------------------------------Other------------------------------------*/
-// int getNumberOfAccounts();
-// void updateNumberOfAccounts(int &count);
-// int getNumberOfComputers();
-// void updateNumberOfComputers(int &count);
-
-
+int getNumberOfAccounts();
+void updateNumberOfAccounts(int &count);
+int getNumberOfComputers();
+void updateNumberOfComputers(int &count);
 
 #endif

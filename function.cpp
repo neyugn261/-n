@@ -1,6 +1,10 @@
 #include "function.h"
 #include "admin.h"
 #include "user.h"
+#include <fstream>
+#include <sstream>
+#include <conio.h>
+// #include <iomanip>
 /*------------------------------------CONSOLE------------------------------------*/
 
 void ShowCursor(bool CursorVisibility)
@@ -249,57 +253,57 @@ void menuAdmin(Admin &admin)
 
 /*------------------------------------Other------------------------------------*/
 
-// int getNumberOfAccounts()
-// {
-//     int count;
-//     fstream file("UserID.txt", ios::in);
-//     if (!file.is_open())
-//     {
-//         cout << "Không thể mở file" << endl;
-//         return -1;
-//     }
-//     file >> count;
-//     file.close();
-//     return count;
-// }
+int getNumberOfAccounts()
+{
+    int count;
+    fstream file("UserID.txt", ios::in);
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return -1;
+    }
+    file >> count;
+    file.close();
+    return count;
+}
 
-// void updateNumberOfAccounts(int &count)
-// {
-//     fstream file("UserID.txt", ios::out);
-//     if (!file.is_open())
-//     {
-//         cout << "Không thể mở file" << endl;
-//         return;
-//     }
-//     file << count;
-//     file.close();
-// }
+void updateNumberOfAccounts(int &count)
+{
+    fstream file("UserID.txt", ios::out);
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+    file << count;
+    file.close();
+}
 
-// int getNumberOfComputers()
-// {
-//     int count;
-//     fstream file("ComputerID.txt", ios::in);
-//     if (!file.is_open())
-//     {
-//         cout << "Không thể mở file" << endl;
-//         return -1;
-//     }
-//     file >> count;
-//     file.close();
-//     return count;
-// }
+int getNumberOfComputers()
+{
+    int count;
+    fstream file("ComputerID.txt", ios::in);
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return -1;
+    }
+    file >> count;
+    file.close();
+    return count;
+}
 
-// void updateNumberOfComputers(int &count)
-// {
-//     fstream file("ComputerID.txt", ios::out);
-//     if (!file.is_open())
-//     {
-//         cout << "Không thể mở file" << endl;
-//         return;
-//     }
-//     file << count;
-//     file.close();
-// }
+void updateNumberOfComputers(int &count)
+{
+    fstream file("ComputerID.txt", ios::out);
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+    file << count;
+    file.close();
+}
 
 
 
