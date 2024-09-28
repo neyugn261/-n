@@ -3,6 +3,8 @@
 
 #include "account.h"
 
+class User;
+
 // Class
 class Admin : public Account
 {
@@ -10,12 +12,13 @@ private:
     float balance;
 
 public:
-    Admin();
-    Admin(string id, string adminName, string password);
+    Admin();  
+    Admin(string id, string name,string password);
     ~Admin();
 
     void addAccount();
     void addComputer();
+    void recharge(User &user,string money);
 };
 
 /*------------------------------------Other------------------------------------*/

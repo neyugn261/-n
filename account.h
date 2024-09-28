@@ -14,7 +14,7 @@ protected:
 
 public:
     Account();
-    Account(string id, string name, string password, string role);
+    Account(string id, string name, string password);
     ~Account();
 
     string getName();
@@ -22,6 +22,7 @@ public:
     string getId();
     string getRole();
     void setId(string Id);
+    void setName(string Name);
 
     bool login();
     void assignRoleIsUser();

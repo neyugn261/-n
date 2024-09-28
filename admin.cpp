@@ -5,15 +5,21 @@
 #include <sstream>
 #include <iomanip>
 #include <conio.h>
+#include <algorithm>
 
 #define KEY_ENTER 13
 
 // #include "function.h"
 
-Admin::Admin() : Account() {}
+Admin::Admin() : Account()
+{
+    role = "ADMIN";
+}
 
-Admin::Admin(string id, string adminName, string password)
-    : Account(id, adminName, password, "ADMIN") {}
+Admin::Admin(string id, string name, string password) : Account(id, name, password)
+{
+    role = "ADMIN";
+}
 
 Admin::~Admin() {};
 
@@ -117,6 +123,26 @@ void Admin::addComputer()
     {
         cout << "Không thể mở file " << filename << endl;
     }
+}
+void Admin ::recharge(User &user, string money)
+{
+    string temp1 = user.getBalance();    
+    temp1.erase(remove(temp1.begin(), temp1.end(), '.'), temp1.end());
+    int x = stoi(temp1);   
+    int y = stoi(money);
+    int z = x + y;
+    temp1 = std::to_string(z);
+
+    // Định dạng lại chuỗi để thêm dấu chấm
+    int insertPosition = temp1.length() - 3; // Vị trí chèn dấu chấm
+    while (insertPosition > 0)
+    {
+        temp1.insert(insertPosition, "."); // Thêm dấu chấm
+        insertPosition -= 3;                      // Giảm vị trí thêm dấu chấm 3 đơn vị
+    }
+
+    user.setBalance(temp1);
+    updateAccountToFile(user);
 }
 /*------------------------------------Other------------------------------------*/
 int getNumberOfAccounts()

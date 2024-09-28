@@ -180,6 +180,9 @@ void menuQLTK(Admin &admin)
             case 3:
                 TTTT();
                 break;
+            case 4:
+                BfRecharge(admin);
+                break;
             case 5:
                 return;
             }
@@ -190,7 +193,7 @@ void menuQLTK(Admin &admin)
 
 void menuTTTT(User &user)
 {
-    SetConsoleTitle(TEXT("Menu TTTT"));
+    SetConsoleTitle(TEXT("menu TTTT"));
     int selectOption = 1;
     while (true)
     {
@@ -308,40 +311,29 @@ void TTTT()
     ShowCursor(true);
     string name;
     User user;
-    string pathFileUser = "./account/userAccount.txt";
-    fstream fileUser(pathFileUser, ios::in);
 
-    int i = 1;
     int count = 0;
     cout << "(Nhập sai quá 3 lần tự động thoát)" << endl;
     while (count < 3)
     {
         cout << "Nhập tên tài khoản: ";
         cin >> name;
-
-        while (getUserFromFile(fileUser, user))
+        user.setName(name);
+        if (checkUser(user))
         {
-            if (user.getName() == name)
-            {
-                i = 0;
-                break;
-            }
-        }
-
-        if (i)
-        {
-            cout << "Không tìm thấy tài khoản!" << endl;
-            count++;
-        }
-        else
+            system("cls");
+            ShowCursor(false);
+            menuTTTT(user);
             break;
+        }
+        count++;
+        system("cls");
+        cout << "(Nhập sai quá 3 lần tự động thoát: " << count << " lần)" << endl;
+        cout << "Không tìm thấy tài khoản!" << endl;
+        
     }
     system("cls");
     ShowCursor(false);
-    if (i)
-        return;
-    fileUser.close();
-    menuTTTT(user);
 }
 
 void seenUser(User &user)
@@ -364,6 +356,7 @@ void resetBalance(User &user)
 {
     system("cls");
     user.resetBalance();
+    updateAccountToFile(user);
     cout << "Đặt lại số dư tài khoản thành công!" << endl;
     cout << "\n(Nhấn ENTER để quay lại)" << endl;
     while (true)
@@ -375,6 +368,7 @@ void resetBalance(User &user)
             return;
         }
     }
+   
 }
 
 void changePassword(User &user)
@@ -410,3 +404,47 @@ void changePassword(User &user)
         }
     }
 }
+
+void BfRecharge(Admin &admin)
+{
+    ShowCursor(true);
+    string name;
+    User user;
+
+    int count = 0;
+    cout << "(Nhập sai quá 3 lần tự động thoát)" << endl;
+    while (count < 3)
+    {
+        cout << "Nhập tên tài khoản: ";
+        cin >> name;
+        user.setName(name);
+        if (checkUser(user))
+        {
+            system("cls");
+            cout << "Nhập số tiền cần nạp: ";
+            string n;
+            cin >> n;
+            admin.recharge(user, n);
+            cout << "Nạp tiền thành công!" << endl;
+            cout << "\n(Nhất ENTER để thoát)";
+            while (true)
+            {
+                int key = _getch();
+                if (key == KEY_ENTER)
+                {
+                    ShowCursor(false);
+                    system("cls");
+                    return;
+                }
+            }
+        }
+        system("cls");
+        count++;
+        cout << "(Nhập sai quá 3 lần tự động thoát: " << count << " lần)" << endl;
+        cout << "Không tìm thấy tài khoản!" << endl;
+        
+    }
+    system("cls");
+    ShowCursor(false);
+}
+/*------------------------------------Other------------------------------------*/

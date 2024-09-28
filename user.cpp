@@ -5,12 +5,21 @@
 
 User::User() : Account()
 {
+    role = "USER";
     balance = "0.000";
 }
 
+User::User(string id, string name, string password) : Account(id, name, password)
+{
+    role = "USER";
+}
 User::~User() {};
 
 string User::getBalance() { return balance; }
+
+void User::setBalance(string balance){
+    this->balance = balance;
+}
 
 void User::changePassword(string newPassword)
 {
@@ -62,7 +71,8 @@ bool checkUser(User &user)
     while (getUserFromFile(file, temp))
     {
         if (temp.name == user.name)
-        {
+        {   
+            user = temp;
             return true;
         }
     }

@@ -7,6 +7,7 @@
 #include <windows.h>
 #include <conio.h>
 #include <iomanip>
+#include <string>
 
 using namespace std;
 
@@ -35,6 +36,8 @@ void TTTT();
 void seenUser(User &user);
 void resetBalance(User &user);
 void changePassword(User &user);
+void recharge(User &user);
+void BfRecharge(Admin &admin);
 /*------------------------------------Other------------------------------------*/
 
 #endif

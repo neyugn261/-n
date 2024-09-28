@@ -11,10 +11,11 @@ private:
 
 public:
     User();
-    User(string id, string userName, string password);
+    User(string id, string name, string password);
     ~User();
 
     string getBalance();
+    void setBalance(string balance);
 
     void changePassword(string passWord);
     void resetBalance();

@@ -8,10 +8,8 @@
 #define KEY_ENTER 13
 #define KEY_BACKSPACE 8
 
-Account::Account() : id("") {}
-
-Account::Account(string id, string name, string password, string role)
-    : id(id), name(name), password(password), role(role) {}
+Account::Account() : id(""), name(""), password(""), role("") {}
+Account::Account(string id, string name, string password) : id(id), name(name), password(password) {}
 
 Account::~Account() {}
 
@@ -24,6 +22,8 @@ string Account::getId() { return id; }
 string Account::getRole() { return role; }
 
 void Account::setId(string Id) { id = Id; }
+
+void Account::setName(string Name) { name = Name; }
 
 void Account::assignRoleIsUser() { role = "USER"; }
 
