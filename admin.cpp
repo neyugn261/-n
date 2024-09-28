@@ -6,10 +6,7 @@
 #include <iomanip>
 #include <conio.h>
 
-
 #define KEY_ENTER 13
-
-
 
 // #include "function.h"
 
@@ -20,65 +17,13 @@ Admin::Admin(string id, string adminName, string password)
 
 Admin::~Admin() {};
 
-int getNumberOfAccounts()
-{
-    int count;
-    fstream file("./account/UserID.txt", ios::in);
-    if (!file.is_open())
-    {
-        cout << "Không thể mở file" << endl;
-        return -1;
-    }
-    file >> count;
-    file.close();
-    return count;
-}
-
-void updateNumberOfAccounts(int &count)
-{
-    fstream file("./account/UserID.txt", ios::out);
-    if (!file.is_open())
-    {
-        cout << "Không thể mở file" << endl;
-        return;
-    }
-    file << count;
-    file.close();
-}
-
-int getNumberOfComputers()
-{
-    int count;
-    fstream file("./computer/ComputerID.txt", ios::in);
-    if (!file.is_open())
-    {
-        cout << "Không thể mở file" << endl;
-        return -1;
-    }
-    file >> count;
-    file.close();
-    return count;
-}
-
-void updateNumberOfComputers(int &count)
-{
-    fstream file("./computer/ComputerID.txt", ios::out);
-    if (!file.is_open())
-    {
-        cout << "Không thể mở file" << endl;
-        return;
-    }
-    file << count;
-    file.close();
-}
-
 void Admin::addAccount()
 {
     string filename = "./account/listAccount.txt";
     User newAccount;
 
     system("cls");
-    
+
     while (true)
     {
         cin >> newAccount;
@@ -92,8 +37,6 @@ void Admin::addAccount()
             cout << "\nTài khoản đã được sử dụng, vui lòng nhập tài khoản khác!" << endl;
         }
     }
-
-    
 
     newAccount.assignRoleIsUser();
 
@@ -174,4 +117,56 @@ void Admin::addComputer()
     {
         cout << "Không thể mở file " << filename << endl;
     }
+}
+/*------------------------------------Other------------------------------------*/
+int getNumberOfAccounts()
+{
+    int count;
+    fstream file("./account/UserID.txt", ios::in);
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return -1;
+    }
+    file >> count;
+    file.close();
+    return count;
+}
+
+void updateNumberOfAccounts(int &count)
+{
+    fstream file("./account/UserID.txt", ios::out);
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+    file << count;
+    file.close();
+}
+
+int getNumberOfComputers()
+{
+    int count;
+    fstream file("./computer/ComputerID.txt", ios::in);
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return -1;
+    }
+    file >> count;
+    file.close();
+    return count;
+}
+
+void updateNumberOfComputers(int &count)
+{
+    fstream file("./computer/ComputerID.txt", ios::out);
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+    file << count;
+    file.close();
 }

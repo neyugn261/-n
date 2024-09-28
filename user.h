@@ -15,14 +15,20 @@ public:
     ~User();
 
     string getBalance();
-    friend bool checkUser(User &user);
-    friend bool getUserFromFile(fstream &file, User &user);
 
-    friend ostream &operator<<(ostream &out, User &user);
-    void resetBalance();
     void changePassword(string passWord);
+    void resetBalance();
+
+    friend bool getUserFromFile(fstream &file, User &user);
+    friend ostream &operator<<(ostream &out, User &user);
+    friend bool checkUser(User &user);
     friend void updateAccountToFile(User &user);
 };
-bool checkUser(User &user);
+
+/*------------------------------------Friend------------------------------------*/
+bool getUserFromFile(fstream &file, User &user);
 ostream &operator<<(ostream &out, User &user);
+bool checkUser(User &user);
+void updateAccountToFile(User &user);
+
 #endif

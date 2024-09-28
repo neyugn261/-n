@@ -51,6 +51,7 @@ bool Account::login()
     return false;
 }
 
+/*------------------------------------Other------------------------------------*/
 
 bool checkAccount(Account &account)
 {
@@ -89,6 +90,15 @@ bool getAccountFromFile(fstream &file, Account &account)
 
     return true;
 }
+istream &operator>>(istream &in, Account &account)
+{
+    cout << "Username: ";
+    in >> account.name;
+    cout << "Password: ";
+    enterpassword(account.password);
+    return in;
+}
+/*------------------------------------Other------------------------------------*/
 void enterpassword(string &password)
 {
     password = "";
@@ -114,13 +124,4 @@ void enterpassword(string &password)
             cout << "•";
         }
     }
-}
-
-istream &operator>>(istream &in, Account &account)
-{
-    cout << "Username: ";
-    in >> account.name;
-    cout << "Password: ";
-    enterpassword(account.password);
-    return in;
 }

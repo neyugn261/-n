@@ -12,33 +12,18 @@ User::~User() {};
 
 string User::getBalance() { return balance; }
 
-bool checkUser(User &user)
-{
-    string filename = "./account/userAccount.txt";
-    fstream file(filename, ios::in);
-    if (!file.is_open())
-    {
-        cout << "Không thể mở file" << endl;
-        return false;
-    }
-    User temp;
-    while (getUserFromFile(file, temp))
-    {
-        if (temp.name == user.name)
-        {
-            return true;
-        }
-    }
-    file.close();
-    return false;
-}
-
 void User::changePassword(string newPassword)
 {
     password = newPassword;
     updateAccountToFile(*this);
 }
 
+void User::resetBalance()
+{
+    balance = "0.000";
+}
+
+/*------------------------------------Friend------------------------------------*/
 bool getUserFromFile(fstream &file, User &user)
 {
     string line;
@@ -64,12 +49,26 @@ ostream &operator<<(ostream &out, User &user)
     return out;
 }
 
-void User::resetBalance()
+bool checkUser(User &user)
 {
-    balance = "0.000";
+    string filename = "./account/userAccount.txt";
+    fstream file(filename, ios::in);
+    if (!file.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return false;
+    }
+    User temp;
+    while (getUserFromFile(file, temp))
+    {
+        if (temp.name == user.name)
+        {
+            return true;
+        }
+    }
+    file.close();
+    return false;
 }
-
-
 
 void updateAccountToFile(User &account)
 {
@@ -122,17 +121,17 @@ void updateAccountToFile(User &account)
         {
             temp2 = account;
         }
-        tempFile2 << temp2.name << "|" << temp2.password << "|" << temp2.role << endl; 
+        tempFile2 << temp2.name << "|" << temp2.password << "|" << temp2.role << endl;
     }
 
     file1.close();
     tempFile1.close();
-    file2.close(); 
-    tempFile2.close(); 
+    file2.close();
+    tempFile2.close();
 
     system("del .\\account\\userAccount.txt");
     system("rename .\\account\\temp1.txt userAccount.txt");
 
     system("del .\\account\\listAccount.txt");
-    system("rename .\\account\\temp2.txt listAccount.txt"); 
+    system("rename .\\account\\temp2.txt listAccount.txt");
 }

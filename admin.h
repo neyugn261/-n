@@ -18,5 +18,11 @@ public:
     void addComputer();
 };
 
+/*------------------------------------Other------------------------------------*/
+int getNumberOfAccounts();
+void updateNumberOfAccounts(int &count);
+int getNumberOfComputers();
+void updateNumberOfComputers(int &count);
+
 
 #endif

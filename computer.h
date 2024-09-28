@@ -21,7 +21,6 @@ public:
     string getStatus();
     string getCost();
     string getRevenue();
-
     void setId(string iD);
 
     void enterCost();

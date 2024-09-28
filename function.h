@@ -8,8 +8,6 @@
 #include <conio.h>
 #include <iomanip>
 
-
-
 using namespace std;
 
 #define KEY_UP 72
@@ -21,34 +19,22 @@ class Admin;
 class User;
 
 /*------------------------------------CONSOLE------------------------------------*/
-
 void ShowCursor(bool CursorVisibility);
 void Gotoxy(SHORT posX, SHORT posY);
-
 /*------------------------------------MENU------------------------------------*/
 void optionMenu(string typeMenu, int option);
-
 void printMenuOption(string typeMenu, int option, bool isSelected);
-
 int getMenuOptionCount(const string &typeMenu);
-
 void showMenu(string typeMenu, int selectOption);
-
-
-void menuQLTK(Admin &admin);  
-void TTTT(); 
-void menuTTTT(User &user); void seenUser(User &user);
-
+void menuQLTK(Admin &admin);
+void menuTTTT(User &user);
 void menuQLMC(Admin &admin);
-
 void menuAdmin(Admin &admin);
-
+/*-------------------------------Tương tác thông tin------------------------------------*/
+void TTTT();
+void seenUser(User &user);
+void resetBalance(User &user);
+void changePassword(User &user);
 /*------------------------------------Other------------------------------------*/
-// int getNumberOfAccounts();
-// void updateNumberOfAccounts(int &count);
-// int getNumberOfComputers();
-// void updateNumberOfComputers(int &count);
-
-
 
 #endif
