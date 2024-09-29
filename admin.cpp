@@ -126,9 +126,9 @@ void Admin::addComputer()
 }
 void Admin ::recharge(User &user, string money)
 {
-    string temp1 = user.getBalance();    
+    string temp1 = user.getBalance();
     temp1.erase(remove(temp1.begin(), temp1.end(), '.'), temp1.end());
-    int x = stoi(temp1);   
+    int x = stoi(temp1);
     int y = stoi(money);
     int z = x + y;
     temp1 = std::to_string(z);
@@ -138,12 +138,18 @@ void Admin ::recharge(User &user, string money)
     while (insertPosition > 0)
     {
         temp1.insert(insertPosition, "."); // Thêm dấu chấm
-        insertPosition -= 3;                      // Giảm vị trí thêm dấu chấm 3 đơn vị
+        insertPosition -= 3;               // Giảm vị trí thêm dấu chấm 3 đơn vị
     }
 
     user.setBalance(temp1);
     updateAccountToFile(user);
 }
+
+void Admin ::resetBalance(User &user){
+    string temp = "0.000";
+    user.setBalance(temp);
+}
+
 /*------------------------------------Other------------------------------------*/
 int getNumberOfAccounts()
 {

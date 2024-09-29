@@ -17,8 +17,8 @@ public:
     string getBalance();
     void setBalance(string balance);
 
-    void changePassword(string passWord);
-    void resetBalance();
+    void changePassword(string passWord);    
+    void seenUser();
 
     friend bool getUserFromFile(fstream &file, User &user);
     friend ostream &operator<<(ostream &out, User &user);

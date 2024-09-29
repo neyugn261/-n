@@ -2,6 +2,9 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include <conio.h>
+
+#define KEY_ENTER 13
 
 User::User() : Account()
 {
@@ -17,7 +20,8 @@ User::~User() {};
 
 string User::getBalance() { return balance; }
 
-void User::setBalance(string balance){
+void User::setBalance(string balance)
+{
     this->balance = balance;
 }
 
@@ -27,9 +31,20 @@ void User::changePassword(string newPassword)
     updateAccountToFile(*this);
 }
 
-void User::resetBalance()
+void User ::seenUser()
 {
-    balance = "0.000";
+    system("cls");
+    cout << *this;
+    cout << "\n(Nhấn ENTER để thoát)" << endl;
+    while (true)
+    {
+        int key = _getch();
+        if (key == KEY_ENTER)
+        {
+            system("cls");
+            return;
+        }
+    }
 }
 
 /*------------------------------------Friend------------------------------------*/
@@ -71,7 +86,7 @@ bool checkUser(User &user)
     while (getUserFromFile(file, temp))
     {
         if (temp.name == user.name)
-        {   
+        {
             user = temp;
             return true;
         }

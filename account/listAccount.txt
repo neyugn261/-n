@@ -1,4 +1,5 @@
-nguyen|n147|ADMIN
+admin|123|ADMIN
+nguyen|xy|USER
 abc|1234|USER
 aaaaaaa|xy|USER
 hung|2313|USER
@@ -8,5 +9,7 @@ hnhi|0708|USER
 kvi|0201|USER
 thoa|2501|USER
 phugiakieu|147528|USER
-quocnguyen261|123456|USER
+quocnguyen261|bbbb|USER
 phugiakieu12|123123|USER
+naruto|sasuke|USER
+hung11|12|USER

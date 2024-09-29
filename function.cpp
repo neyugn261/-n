@@ -72,7 +72,7 @@ void optionMenu(string typeMenu, int option)
             cout << "Thêm máy con" << endl;
             break;
         case 3:
-            cout << "Thao tác với thông tin máy con" << endl;
+            cout << "Thay đổi gia tiền của máy" << endl;
             break;
         case 4:
             cout << "Xem lịch sử sử dụng máy con" << endl;
@@ -178,7 +178,7 @@ void menuQLTK(Admin &admin)
                 admin.addAccount();
                 break;
             case 3:
-                TTTT();
+                TTTT(admin);
                 break;
             case 4:
                 BfRecharge(admin);
@@ -191,7 +191,7 @@ void menuQLTK(Admin &admin)
     }
 }
 
-void menuTTTT(User &user)
+void menuTTTT(Admin &admin, User &user)
 {
     SetConsoleTitle(TEXT("menu TTTT"));
     int selectOption = 1;
@@ -212,13 +212,13 @@ void menuTTTT(User &user)
             switch (selectOption)
             {
             case 1:
-                seenUser(user);
+                user.seenUser();
                 break;
             case 2:
                 changePassword(user);
                 break;
             case 3:
-                resetBalance(user);
+                resetBalance(admin,user);
                 break;
             case 4:
                 return;
@@ -255,6 +255,7 @@ void menuQLMC(Admin &admin)
                 ShowCursor(false);
                 break;
             case 3:
+
                 break;
             case 7:
                 return;
@@ -306,7 +307,7 @@ void menuAdmin(Admin &admin)
     ShowCursor(true);
 }
 /*-------------------------------Tương tác thông tin------------------------------------*/
-void TTTT()
+void TTTT(Admin &admin)
 {
     ShowCursor(true);
     string name;
@@ -323,39 +324,22 @@ void TTTT()
         {
             system("cls");
             ShowCursor(false);
-            menuTTTT(user);
+            menuTTTT(admin,user);
             break;
         }
         count++;
         system("cls");
         cout << "(Nhập sai quá 3 lần tự động thoát: " << count << " lần)" << endl;
         cout << "Không tìm thấy tài khoản!" << endl;
-        
     }
     system("cls");
     ShowCursor(false);
 }
 
-void seenUser(User &user)
+void resetBalance(Admin &admin, User &user)
 {
     system("cls");
-    cout << user;
-    cout << "\n(Nhấn ENTER để thoát)" << endl;
-    while (true)
-    {
-        int key = _getch();
-        if (key == KEY_ENTER)
-        {
-            system("cls");
-            return;
-        }
-    }
-}
-
-void resetBalance(User &user)
-{
-    system("cls");
-    user.resetBalance();
+    admin.resetBalance(user);
     updateAccountToFile(user);
     cout << "Đặt lại số dư tài khoản thành công!" << endl;
     cout << "\n(Nhấn ENTER để quay lại)" << endl;
@@ -368,7 +352,6 @@ void resetBalance(User &user)
             return;
         }
     }
-   
 }
 
 void changePassword(User &user)
@@ -442,7 +425,6 @@ void BfRecharge(Admin &admin)
         count++;
         cout << "(Nhập sai quá 3 lần tự động thoát: " << count << " lần)" << endl;
         cout << "Không tìm thấy tài khoản!" << endl;
-        
     }
     system("cls");
     ShowCursor(false);

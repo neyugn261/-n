@@ -28,15 +28,13 @@ void printMenuOption(string typeMenu, int option, bool isSelected);
 int getMenuOptionCount(const string &typeMenu);
 void showMenu(string typeMenu, int selectOption);
 void menuQLTK(Admin &admin);
-void menuTTTT(User &user);
+void menuTTTT(Admin &admin, User &user);
 void menuQLMC(Admin &admin);
 void menuAdmin(Admin &admin);
 /*-------------------------------Tương tác thông tin------------------------------------*/
-void TTTT();
-void seenUser(User &user);
-void resetBalance(User &user);
+void TTTT(Admin &admin);
+void resetBalance(Admin &admin, User &user);
 void changePassword(User &user);
-void recharge(User &user);
 void BfRecharge(Admin &admin);
 /*------------------------------------Other------------------------------------*/
 
