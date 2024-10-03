@@ -1,5 +1,5 @@
 admin|123|ADMIN
-nguyen|xy|USER
+nguyen|xyzz|USER
 abc|1234|USER
 aaaaaaa|xy|USER
 hung|2313|USER
@@ -13,3 +13,5 @@ quocnguyen261|bbbb|USER
 phugiakieu12|123123|USER
 naruto|sasuke|USER
 hung11|12|USER
+anhnhoem|123456|USER
+metvl|456|USER

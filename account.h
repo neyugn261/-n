@@ -12,9 +12,8 @@ protected:
     string password;
     string role;
 
-public:
-    Account();
-    Account(string id, string name, string password);
+public:    
+    Account(string id = "", string name = "", string password = "");
     ~Account();
 
     string getName();

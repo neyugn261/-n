@@ -4,6 +4,7 @@
 #include "account.h"
 
 class User;
+class Computer;
 
 // Class
 class Admin : public Account
@@ -11,15 +12,16 @@ class Admin : public Account
 private:
     float balance;
 
-public:
-    Admin();
-    Admin(string id, string name, string password);
+public: 
+    Admin(string id = "", string name = "", string password = "");
     ~Admin();
 
     void addAccount();
     void addComputer();
-    void recharge(User &user, string money);
+    void recharge(User &user);
     void resetBalance(User &user);
+    void chagneCostCom(Computer &Computer);
+    void seenUser(User &user);
 };
 
 /*------------------------------------Other------------------------------------*/

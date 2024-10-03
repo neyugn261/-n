@@ -27,15 +27,37 @@ void optionMenu(string typeMenu, int option);
 void printMenuOption(string typeMenu, int option, bool isSelected);
 int getMenuOptionCount(const string &typeMenu);
 void showMenu(string typeMenu, int selectOption);
+
 void menuQLTK(Admin &admin);
-void menuTTTT(Admin &admin, User &user);
+/**/ void menuTTTT(Admin &admin, User &user);
+
 void menuQLMC(Admin &admin);
 void menuAdmin(Admin &admin);
-/*-------------------------------Tương tác thông tin------------------------------------*/
-void TTTT(Admin &admin);
-void resetBalance(Admin &admin, User &user);
-void changePassword(User &user);
-void BfRecharge(Admin &admin);
-/*------------------------------------Other------------------------------------*/
+/*-------------------------------QLTK------------------------------------*/
+void seenListAccount(Admin &admin); // chưa làm 
 
+void addAccount(Admin &admin);
+
+void TTTT(Admin &admin);
+/**/ void seenUser(Admin &admin, User &user);
+/**/ void resetBalance(Admin &admin, User &user);
+/**/ void changePassword(User &user);
+
+void Recharge(Admin &admin);
+
+/*------------------------------------QLMC------------------------------------*/
+void seenListComputer(Admin &admin); // chưa làm
+
+void addComputer(Admin &admin);
+
+void changeCost(Admin &admin);
+
+void seenHistory(Admin &admin); // chưa làm
+
+void createSession(Admin &admin); // chưa làm vì khó :((
+
+void caculateRevenue(Admin &admin); // chưa làm
+
+/*------------------------------------Hóa đơn------------------------------------*/
+void printInvoice(Admin &admin); // chưa làm
 #endif

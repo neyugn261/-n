@@ -11,11 +11,6 @@
 
 // #include "function.h"
 
-Admin::Admin() : Account()
-{
-    role = "ADMIN";
-}
-
 Admin::Admin(string id, string name, string password) : Account(id, name, password)
 {
     role = "ADMIN";
@@ -54,6 +49,7 @@ void Admin::addAccount()
     newAccount.setId(id);
     updateNumberOfAccounts(count);
 
+    // thay đổi file userAccount.txt
     fstream userFile("./account/userAccount.txt", ios::out | ios::app);
     if (userFile.is_open())
     {
@@ -65,6 +61,7 @@ void Admin::addAccount()
         cout << "Không thể mở file " << filename << endl;
     }
 
+    // thay đổi file listAccount.txt
     fstream listFile("./account/listAccount.txt", ios::out | ios::app);
     if (listFile.is_open())
     {
@@ -75,93 +72,79 @@ void Admin::addAccount()
     {
         cout << "Không thể mở file " << filename << endl;
     }
-    cout << "\n(Nhấn ENTER để thoát)" << endl;
-    while (true)
-    {
-        int key = _getch();
-        if (key == KEY_ENTER)
-        {
-            system("cls");
-            return;
-        }
-    }
 }
 
 void Admin::addComputer()
 {
     string filename = "./computer/listComputer.txt";
     Computer newComputer;
+    cout << "Nhập giá tiền trên 1 giờ của máy: ";
     newComputer.enterCost();
 
     int count = getNumberOfComputers();
     count++;
     stringstream ss;
     ss << setw(2) << setfill('0') << count;
-    string id = "MAY" + ss.str();
-    newComputer.setId(id);
+    newComputer.setId("MAY" + ss.str());
 
     updateNumberOfComputers(count);
 
     fstream file("./computer/listComputer.txt", ios::out | ios::app);
-    if (file.is_open())
+    if (file)
     {
         file << newComputer.getId() << "|" << newComputer.getCost() << "|" << newComputer.getStatus() << "|" << newComputer.getRevenue() << endl;
-        file.close();
-        cout << "Thêm máy thành công!" << endl;
-        cout << "\n(Nhấn ENTER để thoát)" << endl;
-        while (true)
-        {
-            int key = _getch();
-            if (key == KEY_ENTER)
-            {
-                system("cls");
-                return;
-            }
-        }
     }
     else
     {
         cout << "Không thể mở file " << filename << endl;
     }
 }
-void Admin ::recharge(User &user, string money)
+void Admin ::recharge(User &user)
 {
-    string temp1 = user.getBalance();
-    temp1.erase(remove(temp1.begin(), temp1.end(), '.'), temp1.end());
-    int x = stoi(temp1);
-    int y = stoi(money);
-    int z = x + y;
-    temp1 = std::to_string(z);
+    string money;
+    cin >> money;
 
-    // Định dạng lại chuỗi để thêm dấu chấm
-    int insertPosition = temp1.length() - 3; // Vị trí chèn dấu chấm
+    string balance = user.getBalance();
+    balance.erase(remove(balance.begin(), balance.end(), '.'), balance.end());
+
+    int total = stoi(balance) + stoi(money);
+    string formattedBalance = to_string(total);
+
+    int insertPosition = formattedBalance.length() - 3;
     while (insertPosition > 0)
     {
-        temp1.insert(insertPosition, "."); // Thêm dấu chấm
-        insertPosition -= 3;               // Giảm vị trí thêm dấu chấm 3 đơn vị
+        formattedBalance.insert(insertPosition, ".");
+        insertPosition -= 3;
     }
 
-    user.setBalance(temp1);
+    user.setBalance(formattedBalance);
     updateAccountToFile(user);
 }
+void Admin ::resetBalance(User &user)
+{
+    user.setBalance("0.000");
+}
+void Admin ::chagneCostCom(Computer &computer)
+{
+    computer.enterCost();
+    updateComToFile(computer);
+}
 
-void Admin ::resetBalance(User &user){
-    string temp = "0.000";
-    user.setBalance(temp);
+void Admin ::seenUser(User &user)
+{
+    cout << user;
 }
 
 /*------------------------------------Other------------------------------------*/
 int getNumberOfAccounts()
 {
-    int count;
+    int count = -1;
     fstream file("./account/UserID.txt", ios::in);
-    if (!file.is_open())
-    {
+    if (!file)
         cout << "Không thể mở file" << endl;
-        return -1;
-    }
-    file >> count;
-    file.close();
+    else
+        file >> count;
+    file.close(); // kiểm tra có cần thiết ko
     return count;
 }
 
@@ -174,19 +157,17 @@ void updateNumberOfAccounts(int &count)
         return;
     }
     file << count;
-    file.close();
+    file.close(); // kiểm tra có cần thiết ko
 }
 
 int getNumberOfComputers()
 {
-    int count;
+    int count = -1;
     fstream file("./computer/ComputerID.txt", ios::in);
-    if (!file.is_open())
-    {
+    if (!file)
         cout << "Không thể mở file" << endl;
-        return -1;
-    }
-    file >> count;
+    else
+        file >> count;
     file.close();
     return count;
 }
@@ -194,7 +175,7 @@ int getNumberOfComputers()
 void updateNumberOfComputers(int &count)
 {
     fstream file("./computer/ComputerID.txt", ios::out);
-    if (!file.is_open())
+    if (!file)
     {
         cout << "Không thể mở file" << endl;
         return;

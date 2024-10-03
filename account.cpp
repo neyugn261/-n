@@ -8,7 +8,6 @@
 #define KEY_ENTER 13
 #define KEY_BACKSPACE 8
 
-Account::Account() : id(""), name(""), password(""), role("") {}
 Account::Account(string id, string name, string password) : id(id), name(name), password(password) {}
 
 Account::~Account() {}
@@ -31,7 +30,7 @@ bool Account::login()
 {
     system("cls");
     int count = 0;
-    while (count < 3)
+    while (count++ < 3)
     {
         cin >> *this;
         if (checkAccount(*this))
@@ -42,12 +41,15 @@ bool Account::login()
         else
         {
             cout << "\nĐăng nhập thất bại" << endl;
-            count++;
         }
     }
     system("cls");
-    cout << "Đăng nhập sai quá 3 lần !" << endl;
-    ;
+    cout << "Đã nhập sai quá 3 lần!" << endl;
+    cout << "\n(Nhấn ENTER để thoát)";
+    while (_getch() != KEY_ENTER)
+    {
+    }
+    system("cls");
     return false;
 }
 
@@ -62,6 +64,7 @@ bool checkAccount(Account &account)
         cout << "Không thể mở file" << endl;
         return false;
     }
+
     Account temp;
     while (getAccountFromFile(file, temp))
     {
@@ -73,6 +76,7 @@ bool checkAccount(Account &account)
             return true;
         }
     }
+
     file.close();
     return false;
 }
@@ -80,9 +84,9 @@ bool checkAccount(Account &account)
 bool getAccountFromFile(fstream &file, Account &account)
 {
     string line;
-    getline(file, line);
-    if (line == "")
+    if (!getline(file, line) || line.empty())
         return false;
+
     stringstream ss(line);
     getline(ss, account.name, '|');
     getline(ss, account.password, '|');
@@ -101,26 +105,21 @@ istream &operator>>(istream &in, Account &account)
 /*------------------------------------Other------------------------------------*/
 void enterpassword(string &password)
 {
-    password = "";
-    int i = 0;
+    password.clear();
+    char ch;
     while (true)
     {
-        char ch = getch();
+        ch = getch();
         if (ch == KEY_ENTER)
             break;
-        else if (ch == KEY_BACKSPACE)
+        else if (ch == KEY_BACKSPACE && !password.empty())
         {
-            if (i > 0)
-            {
-                i--;
-                cout << "\b \b";
-                password.pop_back();
-            }
+            cout << "\b \b";
+            password.pop_back();
         }
-        else
+        else if (ch != KEY_BACKSPACE)
         {
             password += ch;
-            i++;
             cout << "•";
         }
     }

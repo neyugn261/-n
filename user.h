@@ -10,15 +10,13 @@ private:
     string balance;
 
 public:
-    User();
-    User(string id, string name, string password);
+    User(string id = "", string name = "", string password = "");
     ~User();
 
     string getBalance();
     void setBalance(string balance);
 
-    void changePassword(string passWord);    
-    void seenUser();
+    void changePassword(string passWord);
 
     friend bool getUserFromFile(fstream &file, User &user);
     friend ostream &operator<<(ostream &out, User &user);
