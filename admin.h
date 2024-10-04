@@ -17,6 +17,7 @@ public:
     ~Admin();
 
     void addAccount();
+    void deleteAccount(User &user);
     void addComputer();
     void recharge(User &user);
     void resetBalance(User &user);
@@ -29,5 +30,8 @@ int getNumberOfAccounts();
 void updateNumberOfAccounts(int &count);
 int getNumberOfComputers();
 void updateNumberOfComputers(int &count);
+bool dataOfEmptyId(fstream &file, int &count);
+int numberFromEmptyId();
+
 
 #endif

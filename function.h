@@ -8,6 +8,7 @@
 #include <conio.h>
 #include <iomanip>
 #include <string>
+#include <functional>
 
 using namespace std;
 
@@ -42,6 +43,7 @@ void TTTT(Admin &admin);
 /**/ void seenUser(Admin &admin, User &user);
 /**/ void resetBalance(Admin &admin, User &user);
 /**/ void changePassword(User &user);
+/**/ void deleteAccount(Admin &admin, User &user);
 
 void Recharge(Admin &admin);
 

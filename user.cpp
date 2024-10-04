@@ -100,7 +100,7 @@ void updateAccountToFile(User &account)
     {
         if (temp1.name == account.name)
         {
-            temp1 = account;
+            temp1 = account;//
         }
         tempFile1 << temp1.id << "|" << temp1.name << "|" << temp1.password << "|" << temp1.role << "|" << temp1.balance << endl;
     }

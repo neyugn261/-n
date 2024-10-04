@@ -2,7 +2,6 @@
 #include "admin.h"
 #include "user.h"
 #include "computer.h"
-#include <functional>
 /*------------------------------------CONSOLE------------------------------------*/
 
 void ShowCursor(bool CursorVisibility)
@@ -101,6 +100,9 @@ void optionMenu(string typeMenu, int option)
             cout << "Reset số dư tài khoản" << endl;
             break;
         case 4:
+            cout << "Xóa tài khoản" << endl;
+            break;
+        case 5:
             cout << "Thoát" << endl;
             break;
         }
@@ -124,7 +126,7 @@ int getMenuOptionCount(const string &typeMenu)
     if (typeMenu == "QLMC")
         return 7;
     if (typeMenu == "TTTT")
-        return 4;
+        return 5;
     if (typeMenu == "một menu khác")
         return 4; // số chức năng của menu
 
@@ -199,7 +201,7 @@ void menuQLTK(Admin &admin)
 void menuTTTT(Admin &admin, User &user)
 {
     SetConsoleTitle(TEXT("Menu TTTT"));
-    navigateMenu("TTTT", admin, 4, [&](int selectOption, bool &exitMenu)
+    navigateMenu("TTTT", admin, 5, [&](int selectOption, bool &exitMenu)
                  {
         switch (selectOption)
         {
@@ -212,7 +214,11 @@ void menuTTTT(Admin &admin, User &user)
         case 3: 
             resetBalance(admin, user);
             break;
-        case 4: 
+        case 4:
+            deleteAccount(admin, user);
+            exitMenu = true;
+            break;
+        case 5: 
             exitMenu = true; // Khi người dùng chọn "Thoát", thoát khỏi menu
             break;
         } });
@@ -244,7 +250,7 @@ void menuAdmin(Admin &admin)
 {
     SetConsoleTitle(TEXT("Menu Admin"));
     ShowCursor(false);
-    navigateMenu("ADMIN", admin, 4, [&](int selectOption,bool &exitMenu)
+    navigateMenu("ADMIN", admin, 4, [&](int selectOption, bool &exitMenu)
                  {
         switch (selectOption)
         {
@@ -392,6 +398,19 @@ void Recharge(Admin &admin)
         system("cls");
     }
 }
+
+void deleteAccount(Admin &admin, User &user)
+{
+    system("cls");
+    cout << "Đã xóa tài khoản: " << user.getName() << endl;
+    admin.deleteAccount(user);
+    cout << "\n(Nhấn ENTER để thoát)";
+    while (_getch() != KEY_ENTER)
+    {
+    }
+    system("cls");    
+}
+
 /*------------------------------------QLMC------------------------------------*/
 void addComputer(Admin &admin)
 {

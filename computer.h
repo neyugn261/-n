@@ -32,7 +32,7 @@ public:
     friend void updateComToFile(Computer &computer);
     friend bool checkCom(Computer &com);
 };
-
+/*------------------------------------Friend------------------------------------*/
 bool getComFromFile(fstream &file, Computer &computer);
 bool checkCom(Computer &computer);
 void updateComToFile(Computer &computer);

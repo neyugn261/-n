@@ -29,10 +29,7 @@ void Admin::addAccount()
     {
         cin >> newAccount;
         if (!checkUser(newAccount))
-        {
-            cout << "\nTạo tài khoản thành công!" << endl;
             break;
-        }
         else
         {
             cout << "\nTài khoản đã được sử dụng, vui lòng nhập tài khoản khác!" << endl;
@@ -41,13 +38,19 @@ void Admin::addAccount()
 
     newAccount.assignRoleIsUser();
 
-    int count = getNumberOfAccounts();
-    count++;
+    int count = numberFromEmptyId();
+
+    if (count == -1)
+    {
+        count = getNumberOfAccounts();
+        count++;
+        updateNumberOfAccounts(count);
+    }
     stringstream ss;
     ss << setw(4) << setfill('0') << count;
     string id = "USER" + ss.str();
     newAccount.setId(id);
-    updateNumberOfAccounts(count);
+    cout << "\nTạo tài khoản thành công với ID là: " << newAccount.getId() << endl;
 
     // thay đổi file userAccount.txt
     fstream userFile("./account/userAccount.txt", ios::out | ios::app);
@@ -72,6 +75,73 @@ void Admin::addAccount()
     {
         cout << "Không thể mở file " << filename << endl;
     }
+}
+
+void Admin::deleteAccount(User &user)
+{
+    // Paths for userAccount and listAccount files
+    string path1 = "./account/userAccount.txt";
+    string tempPath1 = "./account/temp1.txt";
+    string path2 = "./account/listAccount.txt";
+    string tempPath2 = "./account/temp2.txt";
+
+    string path3 = "./account/emptyID.txt";
+
+    fstream file1(path1, ios::in);
+    fstream tempFile1(tempPath1, ios::out);
+    fstream file2(path2, ios::in);
+    fstream tempFile2(tempPath2, ios::out);
+
+    // File open error handling
+    if (!file1.is_open() || !tempFile1.is_open() || !file2.is_open() || !tempFile2.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+
+    // Update userAccount.txt
+    User temp1;
+    while (getUserFromFile(file1, temp1))
+    {
+        if (temp1.getName() == user.getName())
+        {
+            string temp = temp1.getId();
+            string numberPart = temp.substr(4);
+            size_t pos = numberPart.find_first_not_of('0');
+            temp = (pos != string::npos) ? numberPart.substr(pos) : "0";
+
+            fstream file3(path3, ios::app);
+            file3 << temp << endl;
+            file3.close();
+
+            continue; //
+        }
+        tempFile1 << temp1.getId() << "|" << temp1.getName() << "|" << temp1.getPass() << "|" << temp1.getRole() << "|" << temp1.getBalance() << endl;
+    }
+
+    // Update listAccount.txt
+    User temp2;
+    while (getAccountFromFile(file2, temp2)) // Assuming getAccountFromFile is implemented for generic accounts
+    {
+        if (temp2.getName() == user.getName())
+        {
+            continue;
+        }
+        tempFile2 << temp2.getName() << "|" << temp2.getPass() << "|" << temp2.getRole() << endl;
+    }
+
+    // Close all files
+    file1.close();
+    tempFile1.close();
+    file2.close();
+    tempFile2.close();
+
+    // Replace original files with temp files
+    system("del .\\account\\userAccount.txt");
+    system("rename .\\account\\temp1.txt userAccount.txt");
+
+    system("del .\\account\\listAccount.txt");
+    system("rename .\\account\\temp2.txt listAccount.txt");
 }
 
 void Admin::addComputer()
@@ -182,4 +252,44 @@ void updateNumberOfComputers(int &count)
     }
     file << count;
     file.close();
+}
+
+bool dataOfEmptyId(fstream &file, int &count)
+{
+    string line;
+    getline(file, line);
+    if (line.empty())
+        return false;
+    else
+    {
+        count = stoi(line);
+        return true;
+    }
+}
+
+int numberFromEmptyId()
+{
+    int count = -1;
+
+    string path1 = "./account/emptyID.txt";
+    string tempPath1 = "./account/temp1.txt";
+
+    fstream file1(path1, ios::in);
+    fstream tempFile1(tempPath1, ios::out);
+
+    if (dataOfEmptyId(file1, count))
+    {
+        int ans = count;
+        while (dataOfEmptyId(file1, count))
+        {
+            tempFile1 << count << endl;
+        }
+        file1.close();
+        tempFile1.close();
+        system("del .\\account\\emptyID.txt");
+        system("rename .\\account\\temp1.txt emptyID.txt");
+        return ans;
+    }
+
+    return count;
 }
