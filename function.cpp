@@ -70,18 +70,21 @@ void optionMenu(string typeMenu, int option)
             cout << "Thêm máy con" << endl;
             break;
         case 3:
-            cout << "Thay đổi giá tiền của máy" << endl;
+            cout << "Xóa máy con" << endl;
             break;
         case 4:
-            cout << "Xem lịch sử sử dụng máy con" << endl;
+            cout << "Thay đổi giá tiền của máy" << endl;
             break;
         case 5:
-            cout << "Chỉ định tài khoản vào máy con" << endl;
+            cout << "Xem lịch sử sử dụng máy con" << endl;
             break;
         case 6:
-            cout << "Tính toán doanh thu ngày hôm nay" << endl;
+            cout << "Chỉ định tài khoản vào máy con" << endl;
             break;
         case 7:
+            cout << "Tính toán doanh thu ngày hôm nay" << endl;
+            break;
+        case 8:
             cout << "Thoát" << endl;
             break;
         }
@@ -124,7 +127,7 @@ int getMenuOptionCount(const string &typeMenu)
     if (typeMenu == "QLTK")
         return 5;
     if (typeMenu == "QLMC")
-        return 7;
+        return 8;
     if (typeMenu == "TTTT")
         return 5;
     if (typeMenu == "một menu khác")
@@ -227,7 +230,7 @@ void menuTTTT(Admin &admin, User &user)
 void menuQLMC(Admin &admin)
 {
     SetConsoleTitle(TEXT("Menu QLMC"));
-    navigateMenu("QLMC", admin, 7, [&](int selectOption, bool &exitMenu)
+    navigateMenu("QLMC", admin, 8, [&](int selectOption, bool &exitMenu)
                  {
         switch (selectOption)
         {
@@ -237,10 +240,13 @@ void menuQLMC(Admin &admin)
         case 2: 
             addComputer(admin);
             break;
-        case 3: 
+        case 3:
+            deleteComputer(admin);
+            break;
+        case 4: 
             changeCost(admin);
             break;
-        case 7: 
+        case 8: 
             exitMenu = true; // Khi người dùng chọn "Thoát", thoát khỏi menu
             break;
         } });
@@ -408,7 +414,7 @@ void deleteAccount(Admin &admin, User &user)
     while (_getch() != KEY_ENTER)
     {
     }
-    system("cls");    
+    system("cls");
 }
 
 /*------------------------------------QLMC------------------------------------*/
@@ -416,14 +422,58 @@ void addComputer(Admin &admin)
 {
     ShowCursor(true);
     admin.addComputer();
-    ShowCursor(false);
-    cout << "Thêm máy thành công!" << endl;
+    ShowCursor(false);   
     cout << "\n(Nhấn ENTER để thoát)" << endl;
 
     while (_getch() != KEY_ENTER)
     {
     }
     system("cls");
+}
+
+void deleteComputer(Admin &admin)
+{
+    ShowCursor(true);
+    Computer computer;
+    int count = 0;
+    cout << "(Nhập sai quá 3 lần tự động thoát)" << endl;
+    while (count++ < 3)
+    {
+        cout << "Nhập ID máy: ";
+        string name;
+        cin >> name;
+        stringstream ss;
+        string id = "MAY" + (stringstream() << setw(2) << setfill('0') << name).str();
+        computer.setId(id);
+        if (checkCom(computer))
+        {
+            system("cls");
+            cout << "Đã xóa: " << computer.getId() << endl;
+            admin.deleteComputer(computer);
+            ShowCursor(false);
+            cout << "\n(Nhấn ENTER để quay lại)" << endl;
+            while (_getch() != KEY_ENTER)
+            {
+            }
+            system("cls");
+
+            return;
+        }
+        system("cls");
+        cout << "(Nhập sai quá 3 lần tự động thoát: " << count << " lần)" << endl;
+        cout << "Không tìm thấy máy!" << endl;
+    }
+    if (count >= 3)
+    {
+        system("cls");
+        cout << "Đã nhập sai quá 3 lần!" << endl;
+        cout << "\n(Nhấn ENTER để thoát)";
+        while (_getch() != KEY_ENTER)
+        {
+        }
+        system("cls");
+    }
+    ShowCursor(false);
 }
 
 void changeCost(Admin &admin)

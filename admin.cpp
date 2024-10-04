@@ -38,7 +38,7 @@ void Admin::addAccount()
 
     newAccount.assignRoleIsUser();
 
-    int count = numberFromEmptyId();
+    int count = numberFromEmptyIdUs();
 
     if (count == -1)
     {
@@ -151,13 +151,17 @@ void Admin::addComputer()
     cout << "Nhập giá tiền trên 1 giờ của máy: ";
     newComputer.enterCost();
 
-    int count = getNumberOfComputers();
-    count++;
+    int count = numberFromEmptyIdCom();
+    if (count == -1)
+    {
+        count = getNumberOfComputers();
+        count++;
+        updateNumberOfComputers(count);
+    }
+
     stringstream ss;
     ss << setw(2) << setfill('0') << count;
     newComputer.setId("MAY" + ss.str());
-
-    updateNumberOfComputers(count);
 
     fstream file("./computer/listComputer.txt", ios::out | ios::app);
     if (file)
@@ -168,7 +172,57 @@ void Admin::addComputer()
     {
         cout << "Không thể mở file " << filename << endl;
     }
+
+    cout << "Đã thêm một máy với ID là: "<<newComputer.getId() << endl;
 }
+
+void Admin::deleteComputer(Computer &computer)
+{
+    // Paths for userAccount and listAccount files
+    string path1 = "./computer/listComputer.txt";
+    string tempPath1 = "./computer/temp1.txt";
+
+    string path3 = "./computer/emptyID.txt";
+
+    fstream file1(path1, ios::in);
+    fstream tempFile1(tempPath1, ios::out);
+
+    // File open error handling
+    if (!file1.is_open() || !tempFile1.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+
+    // Update userAccount.txt
+    Computer temp1;
+    while (getComFromFile(file1, temp1))
+    {
+        if (temp1.getId() == computer.getId())
+        {
+            string temp = temp1.getId();
+            string numberPart = temp.substr(3);
+            size_t pos = numberPart.find_first_not_of('0');
+            temp = (pos != string::npos) ? numberPart.substr(pos) : "0";
+
+            fstream file3(path3, ios::app);
+            file3 << temp << endl;
+            file3.close();
+
+            continue; //
+        }
+        tempFile1 << temp1.getId() << "|" << temp1.getCost() << "|" << temp1.getStatus() << "|" << temp1.getRevenue() << endl;
+    }
+
+    // Close all files
+    file1.close();
+    tempFile1.close();
+
+    // Replace original files with temp files
+    system("del .\\computer\\listComputer.txt");
+    system("rename .\\computer\\temp1.txt listComputer.txt");
+}
+
 void Admin ::recharge(User &user)
 {
     string money;
@@ -267,7 +321,7 @@ bool dataOfEmptyId(fstream &file, int &count)
     }
 }
 
-int numberFromEmptyId()
+int numberFromEmptyIdUs()
 {
     int count = -1;
 
@@ -275,7 +329,17 @@ int numberFromEmptyId()
     string tempPath1 = "./account/temp1.txt";
 
     fstream file1(path1, ios::in);
+    if (!file1.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return count;
+    }
     fstream tempFile1(tempPath1, ios::out);
+    if (!tempFile1.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return count;
+    }
 
     if (dataOfEmptyId(file1, count))
     {
@@ -290,6 +354,48 @@ int numberFromEmptyId()
         system("rename .\\account\\temp1.txt emptyID.txt");
         return ans;
     }
+    file1.close();
+    tempFile1.close();
+    system("del .\\account\\temp1.txt");
+    return count;
+}
 
+int numberFromEmptyIdCom()
+{
+    int count = -1;
+
+    string path1 = "./computer/emptyID.txt";
+    string tempPath1 = "./computer/temp1.txt";
+
+    fstream file1(path1, ios::in);
+    if (!file1.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return count;
+    }
+    fstream tempFile1(tempPath1, ios::out);
+    if (!tempFile1.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return count;
+    }
+
+    if (dataOfEmptyId(file1, count))
+    {
+        int ans = count;
+        while (dataOfEmptyId(file1, count))
+        {
+            tempFile1 << count << endl;
+        }
+        file1.close();
+        tempFile1.close();
+        system("del .\\computer\\emptyID.txt");
+        system("rename .\\computer\\temp1.txt emptyID.txt");
+
+        return ans;
+    }
+    file1.close();
+    tempFile1.close();
+    system("del .\\computer\\temp1.txt");
     return count;
 }

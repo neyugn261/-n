@@ -19,6 +19,7 @@ public:
     void addAccount();
     void deleteAccount(User &user);
     void addComputer();
+    void deleteComputer(Computer &computer);
     void recharge(User &user);
     void resetBalance(User &user);
     void chagneCostCom(Computer &Computer);
@@ -31,7 +32,7 @@ void updateNumberOfAccounts(int &count);
 int getNumberOfComputers();
 void updateNumberOfComputers(int &count);
 bool dataOfEmptyId(fstream &file, int &count);
-int numberFromEmptyId();
-
+int numberFromEmptyIdUs();
+int numberFromEmptyIdCom();
 
 #endif

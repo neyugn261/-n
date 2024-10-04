@@ -52,6 +52,8 @@ void seenListComputer(Admin &admin); // chưa làm
 
 void addComputer(Admin &admin);
 
+void deleteComputer(Admin &admin);
+
 void changeCost(Admin &admin);
 
 void seenHistory(Admin &admin); // chưa làm
