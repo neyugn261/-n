@@ -1,126 +1,130 @@
-#include "account.h"
-#include <fstream>
-#include <sstream>
-#include <conio.h>
+    #include "account.h"
+    #include <fstream>
+    #include <sstream>
+    #include <conio.h>
 
-#define KEY_UP 72
-#define KEY_DOWN 80
-#define KEY_ENTER 13
-#define KEY_BACKSPACE 8
+    #define KEY_UP 72
+    #define KEY_DOWN 80
+    #define KEY_ENTER 13
+    #define KEY_BACKSPACE 8
 
-Account::Account(string id, string name, string password) : id(id), name(name), password(password) {}
+    Account::Account(string id, string name, string password) : id(id), name(name), password(password) { status = "OFFLINE"; }
 
-Account::~Account() {}
+    Account::~Account() {}
 
-string Account::getName() { return name; }
+    string Account::getName() { return name; }
 
-string Account::getPass() { return password; }
+    string Account::getPass() { return password; }
 
-string Account::getId() { return id; }
+    string Account::getId() { return id; }
 
-string Account::getRole() { return role; }
+    string Account::getRole() { return role; }
 
-void Account::setId(string Id) { id = Id; }
+    string Account::getStatus() { return status; }
 
-void Account::setName(string Name) { name = Name; }
+    void Account::setId(string Id) { id = Id; }
 
-void Account::assignRoleIsUser() { role = "USER"; }
+    void Account::setName(string Name) { name = Name; }
 
-bool Account::login()
-{
-    system("cls");
-    int count = 0;
-    while (count++ < 3)
+    void Account::setStatus(string Status) { status = Status; }
+
+    void Account::assignRoleIsUser() { role = "USER"; }
+
+    bool Account::login()
     {
-        cin >> *this;
-        if (checkAccount(*this))
+        system("cls");
+        int count = 0;
+        while (count++ < 3)
         {
-            system("cls");
-            return true;
+            cin >> *this;
+            if (checkAccount(*this))
+            {
+                system("cls");
+                return true;
+            }
+            else
+            {
+                cout << "\nĐăng nhập thất bại" << endl;
+            }
         }
-        else
+        system("cls");
+        cout << "Đã nhập sai quá 3 lần!" << endl;
+        cout << "\n(Nhấn ENTER để thoát)";
+        while (_getch() != KEY_ENTER)
         {
-            cout << "\nĐăng nhập thất bại" << endl;
         }
-    }
-    system("cls");
-    cout << "Đã nhập sai quá 3 lần!" << endl;
-    cout << "\n(Nhấn ENTER để thoát)";
-    while (_getch() != KEY_ENTER)
-    {
-    }
-    system("cls");
-    return false;
-}
-
-/*------------------------------------Other------------------------------------*/
-
-bool checkAccount(Account &account)
-{
-    string filename = "./account/listAccount.txt";
-    fstream file(filename, ios::in);
-    if (!file.is_open())
-    {
-        cout << "Không thể mở file" << endl;
+        system("cls");
         return false;
     }
 
-    Account temp;
-    while (getAccountFromFile(file, temp))
+    /*------------------------------------Other------------------------------------*/
+
+    bool checkAccount(Account &account)
     {
-        if (temp.name == account.name && temp.password == account.password)
+        string filename = "./account/listAccount.txt";
+        fstream file(filename, ios::in);
+        if (!file.is_open())
         {
-            account.role = temp.role;
-            account.id = temp.id;
-            file.close();
-            return true;
+            cout << "Không thể mở file" << endl;
+            return false;
         }
-    }
 
-    file.close();
-    return false;
-}
+        Account temp;
+        while (getAccountFromFile(file, temp))
+        {
+            if (temp.name == account.name && temp.password == account.password)
+            {
+                account.role = temp.role;
+                account.id = temp.id;
+                file.close();
+                return true;
+            }
+        }
 
-bool getAccountFromFile(fstream &file, Account &account)
-{
-    string line;
-    if (!getline(file, line) || line.empty())
+        file.close();
         return false;
+    }
 
-    stringstream ss(line);
-    getline(ss, account.name, '|');
-    getline(ss, account.password, '|');
-    getline(ss, account.role);
-
-    return true;
-}
-istream &operator>>(istream &in, Account &account)
-{
-    cout << "Username: ";
-    in >> account.name;
-    cout << "Password: ";
-    enterpassword(account.password);
-    return in;
-}
-/*------------------------------------Other------------------------------------*/
-void enterpassword(string &password)
-{
-    password.clear();
-    char ch;
-    while (true)
+    bool getAccountFromFile(fstream &file, Account &account)
     {
-        ch = getch();
-        if (ch == KEY_ENTER)
-            break;
-        else if (ch == KEY_BACKSPACE && !password.empty())
+        string line;
+        if (!getline(file, line) || line.empty())
+            return false;
+
+        stringstream ss(line);
+        getline(ss, account.name, '|');
+        getline(ss, account.password, '|');
+        getline(ss, account.role);
+
+        return true;
+    }
+    istream &operator>>(istream &in, Account &account)
+    {
+        cout << "Username: ";
+        in >> account.name;
+        cout << "Password: ";
+        enterpassword(account.password);
+        return in;
+    }
+    /*------------------------------------Other------------------------------------*/
+    void enterpassword(string &password)
+    {
+        password.clear();
+        char ch;
+        while (true)
         {
-            cout << "\b \b";
-            password.pop_back();
-        }
-        else if (ch != KEY_BACKSPACE)
-        {
-            password += ch;
-            cout << "•";
+            ch = getch();
+            if (ch == KEY_ENTER)
+                break;
+            else if (ch == KEY_BACKSPACE && !password.empty())
+            {
+                cout << "\b \b";
+                password.pop_back();
+            }
+            else if (ch != KEY_BACKSPACE)
+            {
+                password += ch;
+                cout << "•";
+            }
         }
     }
-}

@@ -2,48 +2,113 @@
 #define _SESSION_H 1
 
 #include <iostream>
-#include <ctime>
+#include "mtime.h"
 #include "computer.h"
 #include "user.h"
+#include <fstream>
+#include <sstream>
+#include <iomanip>
+#include <conio.h>
+#include <algorithm>
+#include <thread>
+#include <windows.h>
+
 using namespace std;
 
 class Session
 {
 private:
-    int sessionId;
-    User *user;
-    Computer *computer;
-    time_t startTime;
-    time_t endTime;
-    bool isActive;
+    string id;
+    string status;
+    string cost;
+    Time startTime;
+    Time endTime;
 
 public:
-    Session();
-    Session(int sessionId, User &user, Computer &computer);
-
+    Session(User &user, Computer &computer);
     void endSession();
-    int getSessionId();
+
+    string getId();
+    string getCost();
+    string getStatus();
+
+    void endSession(User &user, Computer &computer);
+
+    void setId(string Id);
 };
 
-Session::Session() : sessionId(-1), user(nullptr), computer(nullptr), isActive(false) {}
-
-Session::Session(int sessionId, User &user, Computer &computer)
-    : sessionId(sessionId), user(&user), computer(&computer), isActive(true)
+Session::Session(User &user, Computer &computer)
 {
-    computer.startUsage();
-    startTime = time(nullptr);
+    user.setStatus("ONLINE");
+    updateAccountToFile(user);
+    computer.setStatus("InUse");
+    updateComToFile(computer);
+
+    status = "ACTIVE";
+    cost = "0.000";
+    // xử lí tiền
+    string balance = user.getBalance();
+    balance.erase(remove(balance.begin(), balance.end(), '.'), balance.end());
+    string cost = computer.getCost();
+
+    double temp = stod(balance) / stod(cost) * 3600;
+    int seconds = int(temp);
+    int hours = seconds / 3600;
+    seconds %= 3600;
+    int minutes = seconds / 60;
+    seconds %= 60;
+
+    Time time(hours, minutes, seconds);
+
+    thread threadRunSesssion(runSession, user, computer, time);
+    //  runSession(user, computer, time);
+    threadRunSesssion.join();
 }
 
-void Session::endSession()
+string Session::getId() { return id; }
+
+string Session::getCost() { return cost; }
+
+string Session::getStatus() { return status; }
+
+void Session::setId(string Id) { id = Id; }
+
+void Session::endSession(User &user, Computer &computer)
 {
-    if (isActive)
+    user.setStatus("OFFLINE");
+    computer.setStatus("NotInUse");
+}
+
+void runSession(User &user, Computer &computer, Time &time)
+{
+
+    string path = "./session/" + user.getId() + "_" + computer.getId() + ".txt";
+
+    fstream file(path, ios::out);
+
+    while (true)
     {
-        endTime = time(0);
-        computer->endUsage();
-        isActive = false;
-    }
-}
+        file.seekp(0);
+        file << time;
+        Time temp;
+        file >> temp;
+        time = temp;
+        time--;
 
-int Session::getSessionId() { return sessionId; }
+        if (time.isZero())
+        {
+
+            user.setStatus("OFFLINE");
+            computer.setStatus("NotInUse");
+
+            // xóa file
+            // thanh toán
+            break;
+        }
+        Sleep(1000);
+    }
+
+    file.close();
+}
 
 #endif

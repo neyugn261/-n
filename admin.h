@@ -12,7 +12,7 @@ class Admin : public Account
 private:
     float balance;
 
-public: 
+public:
     Admin(string id = "", string name = "", string password = "");
     ~Admin();
 
@@ -24,15 +24,21 @@ public:
     void resetBalance(User &user);
     void chagneCostCom(Computer &Computer);
     void seenUser(User &user);
+    void seenListAccount(); // chưa đóng khung
+    void seenListCom();     // chưa đóng khung
+    void createSession(Computer &computer, User &user);
 };
 
 /*------------------------------------Other------------------------------------*/
 int getNumberOfAccounts();
 void updateNumberOfAccounts(int &count);
 int getNumberOfComputers();
+void updateNumberOfSessions(int &count);
+int getNumberOfSessions();
 void updateNumberOfComputers(int &count);
 bool dataOfEmptyId(fstream &file, int &count);
 int numberFromEmptyIdUs();
 int numberFromEmptyIdCom();
+int numberFromEmptyIdSess();
 
 #endif

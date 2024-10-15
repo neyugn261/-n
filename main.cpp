@@ -12,7 +12,7 @@ int main()
     {
         if (account.getRole() == "ADMIN")
         {
-            Admin admin(account.getId(), account.getName(), account.getPass());
+            Admin admin (account.getId(), account.getName(), account.getPass());
             menuAdmin(admin);
         }
         else

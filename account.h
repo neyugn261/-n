@@ -6,11 +6,12 @@ using namespace std;
 // Class
 class Account
 {
-protected:
+protected:   
     string id;
     string name;
     string password;
     string role;
+    string status;
 
 public:    
     Account(string id = "", string name = "", string password = "");
@@ -20,8 +21,11 @@ public:
     string getPass();
     string getId();
     string getRole();
+    string getStatus();
+
     void setId(string Id);
     void setName(string Name);
+    void setStatus(string Status);
 
     bool login();
     void assignRoleIsUser();

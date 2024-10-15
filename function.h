@@ -23,6 +23,7 @@ class User;
 /*------------------------------------CONSOLE------------------------------------*/
 void ShowCursor(bool CursorVisibility);
 void Gotoxy(SHORT posX, SHORT posY);
+void pressEnter();
 /*------------------------------------MENU------------------------------------*/
 void optionMenu(string typeMenu, int option);
 void printMenuOption(string typeMenu, int option, bool isSelected);
@@ -35,7 +36,7 @@ void menuQLTK(Admin &admin);
 void menuQLMC(Admin &admin);
 void menuAdmin(Admin &admin);
 /*-------------------------------QLTK------------------------------------*/
-void seenListAccount(Admin &admin); // chưa làm 
+void seenListAccount(Admin &admin); // chưa đóng khung
 
 void addAccount(Admin &admin);
 

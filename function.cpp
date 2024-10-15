@@ -17,6 +17,14 @@ void Gotoxy(SHORT posX, SHORT posY)
     COORD Position = {posX, posY};
     SetConsoleCursorPosition(hStdout, Position);
 }
+void pressEnter()
+{
+    cout << "\n(Nhấn ENTER để thoát)";
+    while (_getch() != KEY_ENTER)
+    {
+    }
+    system("cls");
+}
 /*------------------------------------MENU------------------------------------*/
 void optionMenu(string typeMenu, int option)
 {
@@ -184,7 +192,7 @@ void menuQLTK(Admin &admin)
         switch (selectOption)
         {
         case 1: 
-            // Xem danh sách tài khoản
+            seenListAccount(admin);
             break;
         case 2: 
             addAccount(admin);
@@ -235,7 +243,7 @@ void menuQLMC(Admin &admin)
         switch (selectOption)
         {
         case 1: 
-            // Xem danh sách máy con
+            seenListComputer(admin);
             break;
         case 2: 
             addComputer(admin);
@@ -256,6 +264,8 @@ void menuAdmin(Admin &admin)
 {
     SetConsoleTitle(TEXT("Menu Admin"));
     ShowCursor(false);
+    Gotoxy(0, 0);
+
     navigateMenu("ADMIN", admin, 4, [&](int selectOption, bool &exitMenu)
                  {
         switch (selectOption)
@@ -274,16 +284,18 @@ void menuAdmin(Admin &admin)
     ShowCursor(true);
 }
 /*-------------------------------QLTK------------------------------------*/
+void seenListAccount(Admin &admin)
+{
+    admin.seenListAccount();
+    pressEnter();
+}
+
 void addAccount(Admin &admin)
 {
     ShowCursor(true);
     admin.addAccount();
     ShowCursor(false);
-    cout << "\n(Nhấn ENTER để thoát)" << endl;
-    while (_getch() != KEY_ENTER)
-    {
-    }
-    system("cls");
+    pressEnter();
 }
 
 void TTTT(Admin &admin)
@@ -316,11 +328,7 @@ void TTTT(Admin &admin)
 void seenUser(Admin &admin, User &user)
 {
     admin.seenUser(user);
-    cout << "\n(Nhấn ENTER để thoát)" << endl;
-    while (_getch() != KEY_ENTER)
-    {
-    }
-    system("cls");
+    pressEnter();
 }
 
 void resetBalance(Admin &admin, User &user)
@@ -329,11 +337,7 @@ void resetBalance(Admin &admin, User &user)
     admin.resetBalance(user);
     updateAccountToFile(user);
     cout << "Đặt lại số dư tài khoản thành công!" << endl;
-    cout << "\n(Nhấn ENTER để quay lại)" << endl;
-    while (_getch() != KEY_ENTER)
-    {
-    }
-    system("cls");
+    pressEnter();
 }
 
 void changePassword(User &user)
@@ -355,11 +359,7 @@ void changePassword(User &user)
     }
     ShowCursor(false);
     cout << "\nThay đổi mật khẩu thành công!" << endl;
-    cout << "\n(Nhấn ENTER để thoát)" << endl;
-    while (_getch() != KEY_ENTER)
-    {
-    }
-    system("cls");
+    pressEnter();
 }
 
 void Recharge(Admin &admin)
@@ -381,10 +381,7 @@ void Recharge(Admin &admin)
             cout << "Nhập số tiền cần nạp: ";
             admin.recharge(user);
             cout << "Nạp tiền thành công!" << endl;
-            cout << "\n(Nhấn ENTER để thoát)";
-            while (_getch() != KEY_ENTER)
-            {
-            }
+            pressEnter();
             system("cls");
             break;
         }
@@ -397,10 +394,7 @@ void Recharge(Admin &admin)
     {
         system("cls");
         cout << "Đã nhập sai quá 3 lần!" << endl;
-        cout << "\n(Nhấn ENTER để thoát)";
-        while (_getch() != KEY_ENTER)
-        {
-        }
+        pressEnter();
         system("cls");
     }
 }
@@ -408,27 +402,29 @@ void Recharge(Admin &admin)
 void deleteAccount(Admin &admin, User &user)
 {
     system("cls");
-    cout << "Đã xóa tài khoản: " << user.getName() << endl;
-    admin.deleteAccount(user);
-    cout << "\n(Nhấn ENTER để thoát)";
-    while (_getch() != KEY_ENTER)
+    if (user.getStatus() != "ONLINE")
     {
+        cout << "Đã xóa tài khoản: " << user.getName() << endl;
+        admin.deleteAccount(user);
     }
-    system("cls");
+    else
+        cout << "Tài khoản đang ONlINE, không thể xóa!" << endl;
+    pressEnter();
 }
 
 /*------------------------------------QLMC------------------------------------*/
+void seenListComputer(Admin &admin)
+{
+    admin.seenListCom();
+    pressEnter();
+}
+
 void addComputer(Admin &admin)
 {
     ShowCursor(true);
     admin.addComputer();
-    ShowCursor(false);   
-    cout << "\n(Nhấn ENTER để thoát)" << endl;
-
-    while (_getch() != KEY_ENTER)
-    {
-    }
-    system("cls");
+    ShowCursor(false);
+    pressEnter();
 }
 
 void deleteComputer(Admin &admin)
@@ -448,13 +444,16 @@ void deleteComputer(Admin &admin)
         if (checkCom(computer))
         {
             system("cls");
-            cout << "Đã xóa: " << computer.getId() << endl;
-            admin.deleteComputer(computer);
-            ShowCursor(false);
-            cout << "\n(Nhấn ENTER để quay lại)" << endl;
-            while (_getch() != KEY_ENTER)
+            if (computer.getStatus() == "NotInUse")
             {
+                cout << "Đã xóa: " << computer.getId() << endl;
+                admin.deleteComputer(computer);
+                ShowCursor(false);
             }
+            else
+                cout << "Máy đang được sử dụng!" << endl;
+
+            pressEnter();
             system("cls");
 
             return;
@@ -467,10 +466,7 @@ void deleteComputer(Admin &admin)
     {
         system("cls");
         cout << "Đã nhập sai quá 3 lần!" << endl;
-        cout << "\n(Nhấn ENTER để thoát)";
-        while (_getch() != KEY_ENTER)
-        {
-        }
+        pressEnter();
         system("cls");
     }
     ShowCursor(false);
@@ -498,10 +494,7 @@ void changeCost(Admin &admin)
             admin.chagneCostCom(computer);
             cout << "Thay đổi thành công!" << endl;
             ShowCursor(false);
-            cout << "\n(Nhấn ENTER để quay lại)" << endl;
-            while (_getch() != KEY_ENTER)
-            {
-            }
+            pressEnter();
             system("cls");
 
             return;
@@ -514,10 +507,7 @@ void changeCost(Admin &admin)
     {
         system("cls");
         cout << "Đã nhập sai quá 3 lần!" << endl;
-        cout << "\n(Nhấn ENTER để thoát)";
-        while (_getch() != KEY_ENTER)
-        {
-        }
+        pressEnter();
         system("cls");
     }
     ShowCursor(false);

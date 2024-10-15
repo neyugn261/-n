@@ -7,7 +7,7 @@
 class User : public Account
 {
 private:
-    string balance;
+    string balance;   
 
 public:
     User(string id = "", string name = "", string password = "");

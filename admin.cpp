@@ -1,6 +1,7 @@
 #include "admin.h"
 #include "computer.h"
 #include "user.h"
+#include "session.h"
 #include <fstream>
 #include <sstream>
 #include <iomanip>
@@ -56,7 +57,7 @@ void Admin::addAccount()
     fstream userFile("./account/userAccount.txt", ios::out | ios::app);
     if (userFile.is_open())
     {
-        userFile << newAccount.getId() << "|" << newAccount.getName() << "|" << newAccount.getPass() << "|" << newAccount.getRole() << "|" << newAccount.getBalance() << endl;
+        userFile << newAccount.getId() << "|" << newAccount.getName() << "|" << newAccount.getPass() << "|" << newAccount.getRole() << "|" << newAccount.getStatus() << "|" << newAccount.getBalance() << endl;
         userFile.close();
     }
     else
@@ -173,7 +174,7 @@ void Admin::addComputer()
         cout << "Không thể mở file " << filename << endl;
     }
 
-    cout << "Đã thêm một máy với ID là: "<<newComputer.getId() << endl;
+    cout << "Đã thêm một máy với ID là: " << newComputer.getId() << endl;
 }
 
 void Admin::deleteComputer(Computer &computer)
@@ -258,7 +259,64 @@ void Admin ::seenUser(User &user)
 {
     cout << user;
 }
+void Admin::seenListAccount()
+{
+    cout << "Danh sách tài khoản người dùng" << endl;
+    User user;
+    fstream file("./account/userAccount.txt", ios::in);
+    while (getUserFromFile(file, user))
+    {
+        cout << user.getId() << " " << user.getName() << " " << user.getStatus() << " " << user.getBalance() << endl;
+    }
+    file.close();
+}
 
+void Admin::seenListCom()
+{
+    cout << "Danh sách máy tính" << endl;
+    Computer computer;
+    fstream file("./computer/listComputer.txt", ios::in);
+    while (getComFromFile(file, computer))
+    {
+        cout << computer.getId() << " " << computer.getCost() << " " << computer.getStatus() << " " << computer.getRevenue() << endl;
+    }
+    file.close();
+}
+
+void Admin::createSession(Computer &computer, User &user)
+{
+    string filename = "./session/listSession.txt";
+    Session session(user, computer);
+
+    int count = numberFromEmptyIdSess();
+    if (count == -1)
+    {
+        count = getNumberOfSessions();
+        count++;
+        updateNumberOfAccounts(count);
+    }
+
+    stringstream ss;
+    ss << setw(3) << setfill('0') << count;
+    string id = "USER" + ss.str();
+    session.setId(id);
+    cout << "\nTạo phiên giao dịch thành công với ID là: " << session.getId() << endl;
+   
+    // thay đổi file listSession.txt
+    fstream sessionFile(filename, ios::out | ios::app);
+    if (sessionFile.is_open())
+    {
+        sessionFile << session.getId() << "|" << computer.getId() << "|" << user.getId() << "|" << session.getCost() << "|" << session.getStatus() << endl;
+        sessionFile.close();
+    }
+    else
+    {
+        cout << "Không thể mở file " << filename << endl;
+    }
+
+    // id|user|com|active
+    // id|user|com|cost
+}
 /*------------------------------------Other------------------------------------*/
 int getNumberOfAccounts()
 {
@@ -299,6 +357,30 @@ int getNumberOfComputers()
 void updateNumberOfComputers(int &count)
 {
     fstream file("./computer/ComputerID.txt", ios::out);
+    if (!file)
+    {
+        cout << "Không thể mở file" << endl;
+        return;
+    }
+    file << count;
+    file.close();
+}
+
+int getNumberOfSessions()
+{
+    int count = -1;
+    fstream file("./session/SessionID.txt", ios::in);
+    if (!file)
+        cout << "Không thể mở file" << endl;
+    else
+        file >> count;
+    file.close();
+    return count;
+}
+
+void updateNumberOfSessions(int &count)
+{
+    fstream file("./session/SessionID.txt", ios::out);
     if (!file)
     {
         cout << "Không thể mở file" << endl;
@@ -397,5 +479,45 @@ int numberFromEmptyIdCom()
     file1.close();
     tempFile1.close();
     system("del .\\computer\\temp1.txt");
+    return count;
+}
+
+int numberFromEmptyIdSess()
+{
+    int count = -1;
+
+    string path1 = "./session/emptyID.txt";
+    string tempPath1 = "./sesion/temp1.txt";
+
+    fstream file1(path1, ios::in);
+    if (!file1.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return count;
+    }
+    fstream tempFile1(tempPath1, ios::out);
+    if (!tempFile1.is_open())
+    {
+        cout << "Không thể mở file" << endl;
+        return count;
+    }
+
+    if (dataOfEmptyId(file1, count))
+    {
+        int ans = count;
+        while (dataOfEmptyId(file1, count))
+        {
+            tempFile1 << count << endl;
+        }
+        file1.close();
+        tempFile1.close();
+        system("del .\\session\\emptyID.txt");
+        system("rename .\\session\\temp1.txt emptyID.txt");
+
+        return ans;
+    }
+    file1.close();
+    tempFile1.close();
+    system("del .\\session\\temp1.txt");
     return count;
 }

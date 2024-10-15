@@ -19,7 +19,10 @@ string Computer::getCost() { return pricePerHour; }
 string Computer::getRevenue() { return revenue; }
 
 void Computer::setId(string iD) { id = iD; }
+
 void Computer::setCost(string cost) { pricePerHour = cost; }
+
+void Computer::setStatus(string Status) { status = Status; }
 
 void Computer::startUsage() { status = "InUse"; }
 

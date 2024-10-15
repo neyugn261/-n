@@ -7,7 +7,7 @@
 #define KEY_ENTER 13
 
 User::User(string id, string name, string password) : Account(id, name, password)
-{
+{          
     role = "USER";
     balance = "0.000";
 }
@@ -38,6 +38,7 @@ bool getUserFromFile(fstream &file, User &user)
     getline(ss, user.name, '|');
     getline(ss, user.password, '|');
     getline(ss, user.role, '|');
+    getline(ss, user.status, '|');
     getline(ss, user.balance);
 
     return true;
@@ -49,6 +50,7 @@ ostream &operator<<(ostream &out, User &user)
     cout << "Tài khoản: " << user.getName() << endl;
     cout << "Mật khẩu: " << user.getPass() << endl;
     cout << "Số dư: " << user.getBalance() << endl;
+    cout << "Trạng thái: "<< user.getStatus()<<endl;
     return out;
 }
 
@@ -102,7 +104,7 @@ void updateAccountToFile(User &account)
         {
             temp1 = account;//
         }
-        tempFile1 << temp1.id << "|" << temp1.name << "|" << temp1.password << "|" << temp1.role << "|" << temp1.balance << endl;
+        tempFile1 << temp1.id << "|" << temp1.name << "|" << temp1.password << "|" << temp1.role << "|"<<temp1.status << "|" << temp1.balance << endl;
     }
 
     // Update listAccount.txt

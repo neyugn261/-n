@@ -20,8 +20,10 @@ public:
     string getStatus();
     string getCost();
     string getRevenue();
+
     void setId(string iD);
     void setCost(string cost);
+    void setStatus(string Status);
 
     void enterCost();
     void startUsage();
